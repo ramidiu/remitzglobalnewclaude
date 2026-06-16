@@ -1,10 +1,10 @@
-# Remitm Money Transfer — Deployment to test.remitm.com
+# Remitz Money Transfer — Deployment to test.remitz.com
 
 **Target server:** AlmaLinux 8 @ `68.169.55.246`
-**Frontend path:** `/var/www/remitm/data/www/test.remitm.com/`
+**Frontend path:** `/var/www/remitz/data/www/test.remitz.com/`
 **Backend service:** systemd unit running on port 8080 (proxied via nginx)
 **Database:** local MySQL 8 (already installed)
-**Image storage:** `/var/www/remitm/data/kyc-uploads/legacy/`
+**Image storage:** `/var/www/remitz/data/kyc-uploads/legacy/`
 
 All commands assume you SSH as `root` (or a user with sudo). Adjust paths if you use a different user.
 
@@ -12,13 +12,13 @@ All commands assume you SSH as `root` (or a user with sudo). Adjust paths if you
 
 ## 0. Build artifacts (already produced locally)
 
-Located in `/mnt/c/Users/kreat/claude/remitmproject/deploy/`:
+Located in `/mnt/c/Users/kreat/claude/remitzproject/deploy/`:
 
 | File | Size | Purpose |
 |------|------|---------|
-| `remitm-backend.jar` | ~90 MB | Spring Boot uber-jar (runs on Java 17) |
+| `remitz-backend.jar` | ~90 MB | Spring Boot uber-jar (runs on Java 17) |
 | `frontend-www.tar.gz` | ~5 MB | Angular production build (extracts to `dist/` or `www/`) |
-| `remitm.sql.gz` | ~16 MB | MySQL dump of the local `remitm` database |
+| `remitz.sql.gz` | ~16 MB | MySQL dump of the local `remitz` database |
 | `images/` (folder) | ~700 MB, 826 files | Legacy KYC images for migrated users |
 
 ---
@@ -26,21 +26,21 @@ Located in `/mnt/c/Users/kreat/claude/remitmproject/deploy/`:
 ## 1. Upload everything from your machine (run in WSL)
 
 ```bash
-DEPLOY=/mnt/c/Users/kreat/claude/remitmproject/deploy
+DEPLOY=/mnt/c/Users/kreat/claude/remitzproject/deploy
 SRV=root@68.169.55.246
 
 # Backend JAR
-scp $DEPLOY/remitm-backend.jar $SRV:/tmp/
+scp $DEPLOY/remitz-backend.jar $SRV:/tmp/
 
 # Frontend bundle
 scp $DEPLOY/frontend-www.tar.gz $SRV:/tmp/
 
 # Database dump
-scp $DEPLOY/remitm.sql.gz $SRV:/tmp/
+scp $DEPLOY/remitz.sql.gz $SRV:/tmp/
 
 # Images (rsync = resumable + delta) — ~700 MB
-rsync -avzP /mnt/c/Users/kreat/claude/remitm-static/images/ \
-  $SRV:/var/www/remitm/data/kyc-uploads/legacy/
+rsync -avzP /mnt/c/Users/kreat/claude/remitz-static/images/ \
+  $SRV:/var/www/remitz/data/kyc-uploads/legacy/
 ```
 
 You'll be prompted for the root password on each step.
@@ -61,46 +61,46 @@ java -version    # expect: openjdk version "17.x.x"
 ### 2b. Create application directories
 
 ```bash
-mkdir -p /opt/remitm
-mkdir -p /var/www/remitm/data/kyc-uploads/legacy
-mkdir -p /var/www/remitm/data/www/test.remitm.com
+mkdir -p /opt/remitz
+mkdir -p /var/www/remitz/data/kyc-uploads/legacy
+mkdir -p /var/www/remitz/data/www/test.remitz.com
 
 # Allow the app to read/write the upload dir
-chown -R root:root /var/www/remitm/data
+chown -R root:root /var/www/remitz/data
 ```
 
 ### 2c. Restore the database
 
 ```bash
 # Create the schema (root password is whatever you set during mysql install)
-mysql -uroot -p -e "CREATE DATABASE IF NOT EXISTS remitm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -uroot -p -e "CREATE DATABASE IF NOT EXISTS remitz CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # Create an app user (so backend doesn't run as root)
 mysql -uroot -p <<'SQL'
-CREATE USER IF NOT EXISTS 'remitm'@'localhost' IDENTIFIED BY 'CHANGE_ME_STRONG_PASSWORD';
-GRANT ALL PRIVILEGES ON remitm.* TO 'remitm'@'localhost';
+CREATE USER IF NOT EXISTS 'remitz'@'localhost' IDENTIFIED BY 'CHANGE_ME_STRONG_PASSWORD';
+GRANT ALL PRIVILEGES ON remitz.* TO 'remitz'@'localhost';
 FLUSH PRIVILEGES;
 SQL
 
 # Restore
-zcat /tmp/remitm.sql.gz | mysql -uroot -p remitm
+zcat /tmp/remitz.sql.gz | mysql -uroot -p remitz
 
 # Sanity check
-mysql -uroot -p -e "SELECT COUNT(*) FROM users; SELECT COUNT(*) FROM kyc_documents;" remitm
+mysql -uroot -p -e "SELECT COUNT(*) FROM users; SELECT COUNT(*) FROM kyc_documents;" remitz
 ```
 
 ### 2d. Place the backend JAR
 
 ```bash
-mv /tmp/remitm-backend.jar /opt/remitm/remitm-backend.jar
-chmod 644 /opt/remitm/remitm-backend.jar
+mv /tmp/remitz-backend.jar /opt/remitz/remitz-backend.jar
+chmod 644 /opt/remitz/remitz-backend.jar
 ```
 
 ### 2e. Place the frontend bundle
 
 ```bash
-tar -xzf /tmp/frontend-www.tar.gz -C /var/www/remitm/data/www/test.remitm.com/ --strip-components=1
-chown -R nginx:nginx /var/www/remitm/data/www/test.remitm.com
+tar -xzf /tmp/frontend-www.tar.gz -C /var/www/remitz/data/www/test.remitz.com/ --strip-components=1
+chown -R nginx:nginx /var/www/remitz/data/www/test.remitz.com
 ```
 
 (If you use Apache instead of nginx, use `apache:apache`.)
@@ -108,34 +108,34 @@ chown -R nginx:nginx /var/www/remitm/data/www/test.remitm.com
 ### 2f. Verify the legacy images uploaded
 
 ```bash
-ls /var/www/remitm/data/kyc-uploads/legacy/userIdentity | wc -l   # expect 437
-ls /var/www/remitm/data/kyc-uploads/legacy/userAddress | wc -l    # expect 389
+ls /var/www/remitz/data/kyc-uploads/legacy/userIdentity | wc -l   # expect 437
+ls /var/www/remitz/data/kyc-uploads/legacy/userAddress | wc -l    # expect 389
 ```
 
 ---
 
 ## 3. systemd unit for the backend
 
-Create `/etc/systemd/system/remitm-backend.service`:
+Create `/etc/systemd/system/remitz-backend.service`:
 
 ```ini
 [Unit]
-Description=Remitm Money Transfer backend
+Description=Remitz Money Transfer backend
 After=network.target mysqld.service
 
 [Service]
 Type=simple
-WorkingDirectory=/var/www/remitm/data
-ExecStart=/usr/bin/java -Xms512m -Xmx2g -jar /opt/remitm/remitm-backend.jar
+WorkingDirectory=/var/www/remitz/data
+ExecStart=/usr/bin/java -Xms512m -Xmx2g -jar /opt/remitz/remitz-backend.jar
 Restart=on-failure
 RestartSec=5
 
 # DB connection
 Environment=MYSQL_HOST=localhost
 Environment=MYSQL_PORT=3306
-Environment=MYSQL_USER=remitm
+Environment=MYSQL_USER=remitz
 Environment=MYSQL_PASSWORD=CHANGE_ME_STRONG_PASSWORD
-Environment=SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/remitm?useSSL=false&serverTimezone=UTC
+Environment=SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/remitz?useSSL=false&serverTimezone=UTC
 
 # Redis (install via dnf: dnf install -y redis && systemctl enable --now redis)
 Environment=REDIS_HOST=localhost
@@ -145,22 +145,22 @@ Environment=REDIS_PORT=6379
 Environment=JWT_SECRET=REPLACE_WITH_OUTPUT_OF_openssl_rand_hex_64
 
 # Storage
-Environment=KYC_UPLOAD_DIR=/var/www/remitm/data/kyc-uploads
+Environment=KYC_UPLOAD_DIR=/var/www/remitz/data/kyc-uploads
 
 # Brand
-Environment=BRAND_NAME=Remitm Money Transfer
-Environment=BRAND_SUPPORT_EMAIL=support@remitm.com
-Environment=FRONTEND_URL=https://test.remitm.com
+Environment=BRAND_NAME=Remitz Money Transfer
+Environment=BRAND_SUPPORT_EMAIL=support@remitz.com
+Environment=FRONTEND_URL=https://test.remitz.com
 
 # Email (Brevo)
 Environment=BREVO_API_KEY=CHANGE_ME_BREVO_KEY
-Environment=BREVO_FROM_NAME=Remitm Money Transfer
-Environment=BREVO_FROM_EMAIL=noreply@remitm.com
+Environment=BREVO_FROM_NAME=Remitz Money Transfer
+Environment=BREVO_FROM_EMAIL=noreply@remitz.com
 
 # RemitOne (if used)
 Environment=REMIT_ONE_ENABLED=true
 Environment=REMIT_ONE_USERNAME=Abdulazim.mohammed2817
-Environment=REMIT_ONE_PASSWORD=Aboremitm2007
+Environment=REMIT_ONE_PASSWORD=Aboremitz2007
 Environment=REMIT_ONE_PIN=12345
 Environment=REMIT_ONE_AGENT_NAME=Universal Securities
 
@@ -180,12 +180,12 @@ systemctl enable --now redis
 
 # Enable and start the backend
 systemctl daemon-reload
-systemctl enable remitm-backend
-systemctl start remitm-backend
+systemctl enable remitz-backend
+systemctl start remitz-backend
 
 # Watch the log
-journalctl -u remitm-backend -f
-# (Wait ~30s for "Started RemitmApplication in N seconds")
+journalctl -u remitz-backend -f
+# (Wait ~30s for "Started RemitzApplication in N seconds")
 
 # Health check
 curl http://localhost:8080/actuator/health
@@ -195,15 +195,15 @@ curl http://localhost:8080/actuator/health
 
 ## 4. nginx reverse proxy
 
-Create `/etc/nginx/conf.d/test.remitm.com.conf`:
+Create `/etc/nginx/conf.d/test.remitz.com.conf`:
 
 ```nginx
 server {
     listen 80;
-    server_name test.remitm.com;
+    server_name test.remitz.com;
 
     # Frontend
-    root /var/www/remitm/data/www/test.remitm.com;
+    root /var/www/remitz/data/www/test.remitz.com;
     index index.html;
 
     # Angular SPA — fallback to index.html for client-side routes
@@ -244,17 +244,17 @@ systemctl reload nginx
 The Angular build was produced with `environment.apiUrl` pointing at the dev backend. If after deployment the frontend can't reach the API:
 
 - Open browser DevTools → Network → see what URL it's calling.
-- If it's hitting `http://localhost:8095/api/...` instead of `https://test.remitm.com/api`, we need to rebuild Angular with the production environment file pointing at `https://test.remitm.com/api`. Tell me and I'll rebuild.
+- If it's hitting `http://localhost:8095/api/...` instead of `https://test.remitz.com/api`, we need to rebuild Angular with the production environment file pointing at `https://test.remitz.com/api`. Tell me and I'll rebuild.
 
 ---
 
 ## 6. (Optional) HTTPS
 
-After the site loads on `http://test.remitm.com`, add Let's Encrypt:
+After the site loads on `http://test.remitz.com`, add Let's Encrypt:
 
 ```bash
 dnf install -y certbot python3-certbot-nginx
-certbot --nginx -d test.remitm.com --redirect -m you@remitm.com --agree-tos -n
+certbot --nginx -d test.remitz.com --redirect -m you@remitz.com --agree-tos -n
 ```
 
 ---
@@ -272,7 +272,7 @@ curl http://localhost/api/users  -H "Accept: application/json"   # 403 (auth req
 From your laptop:
 
 ```bash
-curl -I http://test.remitm.com            # 200 from nginx serving Angular
+curl -I http://test.remitz.com            # 200 from nginx serving Angular
 ```
 
 ---
@@ -281,7 +281,7 @@ curl -I http://test.remitm.com            # 200 from nginx serving Angular
 
 | Symptom | Where to look |
 |--------|----------------|
-| Backend won't start | `journalctl -u remitm-backend -n 200` |
+| Backend won't start | `journalctl -u remitz-backend -n 200` |
 | DB connection refused | check `MYSQL_PASSWORD` env in unit file vs the GRANT |
 | 404 on Angular route refresh | nginx `try_files` line missing |
 | API 502 from nginx | backend down or wrong port |
@@ -296,24 +296,24 @@ Future deploys (no schema change):
 
 ```bash
 # locally
-mvn clean package -DskipTests -f remitm-backend/pom.xml
-scp remitm-backend/target/remitm-monolith-1.0.0-SNAPSHOT.jar root@68.169.55.246:/opt/remitm/remitm-backend.jar
+mvn clean package -DskipTests -f remitz-backend/pom.xml
+scp remitz-backend/target/remitz-monolith-1.0.0-SNAPSHOT.jar root@68.169.55.246:/opt/remitz/remitz-backend.jar
 
 # server
-systemctl restart remitm-backend
-journalctl -u remitm-backend -f
+systemctl restart remitz-backend
+journalctl -u remitz-backend -f
 ```
 
 For frontend:
 
 ```bash
 # locally
-cd remitmmoneytransfernew && npm run build
+cd remitzmoneytransfernew && npm run build
 tar -czf /tmp/frontend.tgz -C www .
 scp /tmp/frontend.tgz root@68.169.55.246:/tmp/
 
 # server
-rm -rf /var/www/remitm/data/www/test.remitm.com/*
-tar -xzf /tmp/frontend.tgz -C /var/www/remitm/data/www/test.remitm.com/
-chown -R nginx:nginx /var/www/remitm/data/www/test.remitm.com
+rm -rf /var/www/remitz/data/www/test.remitz.com/*
+tar -xzf /tmp/frontend.tgz -C /var/www/remitz/data/www/test.remitz.com/
+chown -R nginx:nginx /var/www/remitz/data/www/test.remitz.com
 ```

@@ -13,11 +13,11 @@ node_modules/
 *.zip
 
 # Large DB dumps / backups
-remitm_backup_*.sql
+remitz_backup_*.sql
 *.dump
 
 # Static asset trees (served separately, not source)
-remitm-static/
+remitz-static/
 **/kyc-uploads*/
 
 # Logs & OS
@@ -34,9 +34,13 @@ Thumbs.db
 *.env.production
 deploy-live/.env*
 backups/
-deploy/remitm.sql
-**/remitm_production.sql*
+deploy/remitz.sql
+**/remitz_production.sql*
 *.sql.gz
 PAYMENTS.md
 deploy-live/insert_partner_logins.sql
 deploy-live/backfill_beneficiary_bank.sql
+
+# Exception: bundle the DB dump for cross-system transfer (NOT .env — secrets stay out of git)
+!database/
+!database/remitz-full.sql.gz

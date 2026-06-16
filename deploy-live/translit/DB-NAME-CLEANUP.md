@@ -11,7 +11,7 @@ logic as the app (`transliterate-names.js` mirrors the `appLatinName` directive)
   eyeball **before** anything is written.
 - Nothing is applied until Phase 3.
 
-Server: `root@68.169.55.246`  ·  DB container: `remitm-live-mysql`  ·  schema: `remitm`
+Server: `root@68.169.55.246`  ·  DB container: `remitz-live-mysql`  ·  schema: `remitz`
 
 ---
 
@@ -19,20 +19,20 @@ Server: `root@68.169.55.246`  ·  DB container: `remitm-live-mysql`  ·  schema:
 
 ```bash
 ssh root@68.169.55.246
-PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitm-live/.env | cut -d= -f2- | tr -d '"')
+PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitz-live/.env | cut -d= -f2- | tr -d '"')
 STAMP=$(date +%F_%H%M%S)
-mkdir -p /var/www/remitm/backups
-docker exec remitm-live-mysql sh -c "mysqldump -uroot -p'$PW' --single-transaction \
-  --default-character-set=utf8mb4 remitm beneficiaries payin_beneficiaries users transactions" \
-  | gzip > /var/www/remitm/backups/names_pre_translit_$STAMP.sql.gz
-ls -lh /var/www/remitm/backups/names_pre_translit_$STAMP.sql.gz   # confirm it's non-empty
+mkdir -p /var/www/remitz/backups
+docker exec remitz-live-mysql sh -c "mysqldump -uroot -p'$PW' --single-transaction \
+  --default-character-set=utf8mb4 remitz beneficiaries payin_beneficiaries users transactions" \
+  | gzip > /var/www/remitz/backups/names_pre_translit_$STAMP.sql.gz
+ls -lh /var/www/remitz/backups/names_pre_translit_$STAMP.sql.gz   # confirm it's non-empty
 ```
 
 ## Phase 1 — Export the Arabic rows (on the server)
 
 ```bash
-PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitm-live/.env | cut -d= -f2- | tr -d '"')
-Q(){ docker exec remitm-live-mysql mysql -uroot -p"$PW" remitm -N --batch \
+PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitz-live/.env | cut -d= -f2- | tr -d '"')
+Q(){ docker exec remitz-live-mysql mysql -uroot -p"$PW" remitz -N --batch \
        --default-character-set=utf8mb4 -e "$1"; }
 
 Q "SELECT id, full_name FROM beneficiaries WHERE full_name REGEXP '\\\\p{Arabic}'" > /tmp/ben.tsv
@@ -48,7 +48,7 @@ exit
 ## Phase 2 — Generate + review UPDATEs (in WSL)
 
 ```bash
-cd /mnt/c/Users/kreat/claude/remitmnewproject/deploy-live/translit
+cd /mnt/c/Users/kreat/claude/remitznewproject/deploy-live/translit
 scp root@68.169.55.246:"/tmp/ben.tsv /tmp/pben.tsv /tmp/ufn.tsv /tmp/uln.tsv /tmp/tsn.tsv" .
 
 node transliterate-names.js beneficiaries      id full_name   ben.tsv  ben.sql  ben.review.tsv
@@ -70,18 +70,18 @@ original + what it should be and I'll extend the name dictionary, then re-run Ph
 ```bash
 scp ben.sql pben.sql ufn.sql uln.sql tsn.sql root@68.169.55.246:/tmp/
 ssh root@68.169.55.246
-PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitm-live/.env | cut -d= -f2- | tr -d '"')
+PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitz-live/.env | cut -d= -f2- | tr -d '"')
 for f in ben pben ufn uln tsn; do
   echo "== applying $f =="
-  docker exec -i remitm-live-mysql mysql -uroot -p"$PW" --default-character-set=utf8mb4 remitm < /tmp/$f.sql
+  docker exec -i remitz-live-mysql mysql -uroot -p"$PW" --default-character-set=utf8mb4 remitz < /tmp/$f.sql
 done
 ```
 
 ## Phase 4 — Verify (on the server)
 
 ```bash
-PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitm-live/.env | cut -d= -f2- | tr -d '"')
-docker exec remitm-live-mysql mysql -uroot -p"$PW" remitm --default-character-set=utf8mb4 -e "
+PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitz-live/.env | cut -d= -f2- | tr -d '"')
+docker exec remitz-live-mysql mysql -uroot -p"$PW" remitz --default-character-set=utf8mb4 -e "
  SELECT 'beneficiaries' t, COUNT(*) arabic_left FROM beneficiaries WHERE full_name REGEXP '\\\\p{Arabic}'
  UNION ALL SELECT 'payin_ben', COUNT(*) FROM payin_beneficiaries WHERE name REGEXP '\\\\p{Arabic}'
  UNION ALL SELECT 'users_fn', COUNT(*) FROM users WHERE first_name REGEXP '\\\\p{Arabic}'
@@ -95,7 +95,7 @@ Counts should drop to ~0 (a few may remain if a name had only unmappable charact
 
 ```bash
 ssh root@68.169.55.246
-PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitm-live/.env | cut -d= -f2- | tr -d '"')
-zcat /var/www/remitm/backups/names_pre_translit_<STAMP>.sql.gz \
-  | docker exec -i remitm-live-mysql mysql -uroot -p"$PW" --default-character-set=utf8mb4 remitm
+PW=$(grep -E '^MYSQL_ROOT_PASSWORD=' /opt/remitz-live/.env | cut -d= -f2- | tr -d '"')
+zcat /var/www/remitz/backups/names_pre_translit_<STAMP>.sql.gz \
+  | docker exec -i remitz-live-mysql mysql -uroot -p"$PW" --default-character-set=utf8mb4 remitz
 ```

@@ -1,7 +1,0 @@
-{
-  "name": "remitmai-ui",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

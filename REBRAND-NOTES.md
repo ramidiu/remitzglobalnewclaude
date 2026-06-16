@@ -1,52 +1,55 @@
-# Layla → RemitM Rebrand — What Was Done
+# RemitM → Remitz Rebrand — What Was Done
 
-This project is a copy of `layla/laylanewproject`, fully rebranded to **RemitM**. The
-original `layla/` project was left untouched.
+This project (`remitzglobalnewclaude`) was previously branded **RemitM** (itself a copy of the
+Layla money-transfer codebase). It has now been fully rebranded to **Remitz**, adopting the visual
+identity of the `remitzglobal` (ForexBridge) project. Backend logic, APIs, DB schema *structure*,
+auth, business rules, payment flows and integrations were left functionally unchanged — only
+branding, presentation and theme were modified.
 
-## 1. Deep rename (layla + remitz → remitm)
-- All brand strings, identifiers, folders, files and the **Java package** `com.remitz` → `com.remitm`
-  (directories moved, classes `RemitzApplication/RemitzException/RemitzPermissionEvaluator` →
-  `Remitm*`).
-- **Database schema** `remitz` → `remitm` (JDBC URL + `MYSQL_DATABASE` in all compose files).
-- Domains: `laylamoneytransfer.co.uk` / `.com` / `layla.money` / `remitz.co.uk` → **remitm.com**.
-- Folders: `layla-backend`→`remitm-backend`, `layla-migration`→`remitm-migration`,
-  `laylamoneytransfernew`→`remitmmoneytransfernew`, `docker-compose.layla.yml`→`docker-compose.remitm.yml`.
-- **Flyway migrations were NOT edited or renamed** (checksums are immutable). Leftover `remitz`/`layla`
-  inside old migration files is historical/internal. A new additive migration
-  **`V545__rebrand_remitz_to_remitm.sql`** updates the seeded *data* (email templates, admin emails,
-  system_config) to RemitM and deactivates the orphaned "USI Money" payout partner.
-  - ⚠️ The seeded admin login email changes from `platformadmin@remitz.co.uk` → `platformadmin@remitm.com`
-    (and `admin@…` likewise) on fresh installs.
+## 1. Deep rename (RemitM → Remitz)
+Applied case-aware across the entire repo (`RemitM`/`Remitm`→`Remitz`, `REMITM`→`REMITZ`,
+`remitm`→`remitz`):
+- **Java package** `com.remitm` → `com.remitz` (directories moved; classes
+  `RemitmApplication/RemitmException/RemitmPermissionEvaluator` → `Remitz*`, files renamed to match).
+- **Database schema** `remitm` → `remitz` (JDBC URL in `application.yml`, `MYSQL_DATABASE` in compose).
+- **Domains** `remitm.com` → `remitz.com`; company/brand strings, admin emails, email/PDF templates,
+  i18n (`en.json`/`ar.json`), landing + legal copy, configs, docs and comments.
+- **Folders:** `remitm-backend`→`remitz-backend`, `remitm-migration`→`remitz-migration`,
+  `remitmmoneytransfernew`→`remitzmoneytransfernew`.
+- **Files:** `docker-compose.remitm.yml`→`docker-compose.remitz.yml`,
+  `remitmai-design-tokens.scss`→`remitzai-design-tokens.scss`, all `remitm-logo*`→`remitz-logo*`,
+  deploy vhost confs/service, migration `V545__rebrand_remitz_to_remitz.sql`.
+- Verified: **0** occurrences of `remitm` (any case) remain in source or filenames.
 
-## 2. Providers removed
-| Provider | What it was | How it was removed |
-|----------|-------------|--------------------|
-| **Volume** | open-banking pay-in | Backend module, frontend pages, send-money Open-Banking option, config & webhook all deleted. |
-| **USI Money** | payout rail (UG/TR/EG/QA/SA/AE) | Backend module, superadmin page, service, routes/menu, config deleted; orphan partner row deactivated via V545. |
-| **Brevo** | email API (was the ONLY sender) | Replaced with **`SmtpEmailSender`** (Spring `JavaMailSender`). Configure SMTP via env. |
-| **Smarty** | address autocomplete | Backend module deleted; frontend `AddressService` stubbed to return empty → **manual address entry**. |
+## 2. Design system — adopted the Remitz identity from `remitzglobal`
+- **Palette** swapped from RemitM navy/green to the Remitz scheme in
+  `remitzai-design-tokens.scss` (`$fb-*` tokens, names kept for compatibility), and cascaded to all
+  hardcoded hex/rgb across SCSS/HTML/TS and `index.html` `theme-color`:
+  | Role | Old (RemitM) | New (Remitz) |
+  |------|-------------|--------------|
+  | Primary navy | `#003377` | `#1B3571` |
+  | Primary shade | `#002A66` | `#0A2342` |
+  | Primary tint | `#0A4A99` | `#2B4C9F` |
+  | Secondary | `#5DBB52` (green) | `#9AACE6` (periwinkle) |
+  | Secondary shade | `#4A9E40` | `#7A8FCE` |
+  | Secondary tint | `#7FCB6F` | `#BCC9EE` |
+- **Logos:** the SVG wordmark logos already render "Remitz" in the new palette. Raster logos
+  (`remitz-logo.png`, `remitz-logo.webp` favicon, `remitz-logo-white.png`, backend
+  `remitz-logo-email.png`, `deploy/remitz-logo.png`) were replaced with the authentic Remitz logo
+  art from `remitzglobal/forexbridge-ui/src/assets/images/`.
 
-## 3. Theme & assets
-- Palette swapped to RemitM **navy `#003377`** (primary) + **green `#5DBB52`** (accent) across all SCSS,
-  inline styles, Ionic `variables.scss`, `index.html` theme-color, and email templates.
-- Logos replaced with the RemitM badge (`remitm-logo.png/.webp/-white.png`, email logo, deploy logo).
-- Studied RemitM site images copied to `remitmmoneytransfernew/src/assets/images/remitm-site/`.
+## 3. Validation performed (static — offline)
+- 0 `remitm`/`RemitM`/`REMITM` strings or filenames remain.
+- 0 references to the old palette hexes/rgb.
+- Build contexts (`./remitz-backend`, `./remitzmoneytransfernew`), JDBC schema (`/remitz`),
+  `groupId com.remitz`, package name `remitz-money-transfer`, Dockerfiles, SCSS `@import`s and every
+  referenced logo asset all resolve consistently.
 
-## 4. Landing + legal copy
-Rebuilt with the real RemitM wording (captured from sendmoney.remitm.com) and authoritative company
-facts: **Remitm Limited · Reg. 07956213 · 20 Kirkdale Road, London E11 1HP · 020 8556 0888 ·
-info@remitm.com · www.remitm.com**. Files: landing, about, privacy-policy, mobile-privacy, terms,
-mobile-terms, user-agreement, cookie-policy, complaints, contact-us.
-
-## Manual follow-ups (could not be done here)
-1. **Build** — no Maven/`node_modules` offline. Run:
-   - Backend: `cd remitm-backend && mvn clean package -DskipTests`
-   - Frontend: `cd remitmmoneytransfernew && npm install && npm run build`
-2. **SMTP** — set `MAIL_HOST / MAIL_PORT / MAIL_USERNAME / MAIL_PASSWORD` and
-   `app.notification.email.from` for real email delivery (currently a Mailtrap sandbox default).
-3. **Real WebP logo** — `remitm-logo.webp` currently holds PNG bytes (renders via browser sniffing).
-   Regenerate a true `.webp` and ideally a horizontal wordmark for headers.
-4. **Production infra** (DNS, SSL certs, server paths) was renamed in config text only — actual
-   domain/cert cutover for remitm.com is a separate ops task.
-5. The repo's `CLAUDE.md` files previously advised keeping `com.remitz`; per your explicit request the
-   deep rename was done anyway and those notes were updated.
+## Manual follow-ups (require tooling not available offline)
+1. **Build** — no Maven/`node_modules` here. Run:
+   - Backend: `cd remitz-backend && mvn clean package -DskipTests`
+   - Frontend: `cd remitzmoneytransfernew && npm install && npm run build`
+2. **True WebP favicon** — `remitz-logo.webp` currently holds PNG bytes (renders via browser
+   sniffing). Regenerate a real `.webp` if desired.
+3. **Production infra** (DNS, SSL certs, server paths for remitz.com) was renamed in config text
+   only — actual domain/cert cutover is a separate ops task.

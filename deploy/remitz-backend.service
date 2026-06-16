@@ -1,0 +1,42 @@
+[Unit]
+Description=Remitz Money Transfer backend
+After=network.target mysqld.service redis.service
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/remitz/data
+ExecStart=/usr/bin/java -Xms512m -Xmx2g -jar /opt/remitz/remitz-backend.jar
+Restart=on-failure
+RestartSec=5
+
+Environment=MYSQL_HOST=localhost
+Environment=MYSQL_PORT=3306
+Environment=MYSQL_USER=remitz
+Environment=MYSQL_PASSWORD=LLeopard03%%%%
+Environment=SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/remitz?useSSL=false&serverTimezone=UTC
+
+Environment=REDIS_HOST=localhost
+Environment=REDIS_PORT=6379
+
+Environment=JWT_SECRET=REPLACE_WITH_GENERATED_SECRET
+
+Environment=KYC_UPLOAD_DIR=/var/www/remitz/data/kyc-uploads
+
+Environment=BRAND_NAME=Remitz Money Transfer
+Environment=BRAND_SUPPORT_EMAIL=support@remitz.com
+Environment=FRONTEND_URL=http://test.remitz.com
+
+Environment=BREVO_API_KEY=CHANGE_ME_BREVO_KEY
+Environment=BREVO_FROM_NAME=Remitz Money Transfer
+Environment=BREVO_FROM_EMAIL=noreply@remitz.com
+
+Environment=REMIT_ONE_ENABLED=true
+Environment=REMIT_ONE_USERNAME=Abdulazim.mohammed2817
+Environment=REMIT_ONE_PASSWORD=Aboremitz2007
+Environment=REMIT_ONE_PIN=12345
+Environment=REMIT_ONE_AGENT_NAME=Universal Securities
+
+Environment=SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+[Install]
+WantedBy=multi-user.target

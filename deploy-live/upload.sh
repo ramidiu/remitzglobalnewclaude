@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# upload.sh — one-shot uploader for the Remitm LIVE deployment.
+# upload.sh — one-shot uploader for the Remitz LIVE deployment.
 #
 # Pushes all artifacts in deploy-live/ + the backend source to the server,
 # and creates the required remote directories. Does NOT start anything or
@@ -36,19 +36,19 @@ if [[ -z "$SRV" ]]; then
     exit 1
 fi
 
-# --- remote layout (LIVE — isolated from the /opt/remitm test deploy) --------
-APP_DIR="/opt/remitm-live"
-WEB_DIR="/var/www/remitm/data/www/remitm.com"
-KYC_DIR="/var/www/remitm/data/kyc-uploads-live"
+# --- remote layout (LIVE — isolated from the /opt/remitz test deploy) --------
+APP_DIR="/opt/remitz-live"
+WEB_DIR="/var/www/remitz/data/www/remitz.com"
+KYC_DIR="/var/www/remitz/data/kyc-uploads-live"
 
 # --- preflight: confirm artifacts exist locally -----------------------------
 need=(
-  "$DEPLOY/remitm-frontend.tar.gz"
-  "$DEPLOY/remitm_production.sql.gz"
+  "$DEPLOY/remitz-frontend.tar.gz"
+  "$DEPLOY/remitz_production.sql.gz"
   "$DEPLOY/kyc-uploads-legacy.tar.gz"
   "$DEPLOY/docker-compose.production.yml"
   "$DEPLOY/.env.production"
-  "$DEPLOY/remitm.com.conf"
+  "$DEPLOY/remitz.com.conf"
 )
 echo ">> Preflight: checking local artifacts..."
 missing=0
@@ -59,10 +59,10 @@ for f in "${need[@]}"; do
         printf "   [MISSING] %s\n" "$f"; missing=1
     fi
 done
-if [[ ! -d "$SRC/remitm-backend" ]]; then
-    echo "   [MISSING] backend source dir: $SRC/remitm-backend"; missing=1
+if [[ ! -d "$SRC/remitz-backend" ]]; then
+    echo "   [MISSING] backend source dir: $SRC/remitz-backend"; missing=1
 else
-    echo "   [ok]      remitm-backend/ (source)"
+    echo "   [ok]      remitz-backend/ (source)"
 fi
 [[ $missing -eq 0 ]] || { echo "Aborting: produce the missing artifacts first."; exit 1; }
 
@@ -76,23 +76,23 @@ echo ">> [1/6] Creating remote directories..."
 ssh "${SSH_OPTS[@]}" "$SRV" "mkdir -p '$APP_DIR' '$WEB_DIR' '$KYC_DIR'"
 
 # --- 2. backend source (build context) — exclude build output ---------------
-echo ">> [2/6] Backend source -> $APP_DIR/remitm-backend/"
+echo ">> [2/6] Backend source -> $APP_DIR/remitz-backend/"
 rsync -avzP -e "$RSYNC_SSH" --exclude 'target/' --exclude '.git/' \
-    "$SRC/remitm-backend/" "$SRV:$APP_DIR/remitm-backend/"
+    "$SRC/remitz-backend/" "$SRV:$APP_DIR/remitz-backend/"
 
 # --- 3. compose + env + nginx config ----------------------------------------
 echo ">> [3/6] Compose / env / nginx config -> $APP_DIR and /tmp"
 scp "${SCP_OPTS[@]}" "$DEPLOY/docker-compose.production.yml" "$SRV:$APP_DIR/"
 scp "${SCP_OPTS[@]}" "$DEPLOY/.env.production"                "$SRV:$APP_DIR/"
-scp "${SCP_OPTS[@]}" "$DEPLOY/remitm.com.conf"  "$SRV:/tmp/"
+scp "${SCP_OPTS[@]}" "$DEPLOY/remitz.com.conf"  "$SRV:/tmp/"
 
 # --- 4. database dump -------------------------------------------------------
 echo ">> [4/6] Database dump -> /tmp"
-scp "${SCP_OPTS[@]}" "$DEPLOY/remitm_production.sql.gz"       "$SRV:/tmp/"
+scp "${SCP_OPTS[@]}" "$DEPLOY/remitz_production.sql.gz"       "$SRV:/tmp/"
 
 # --- 5. frontend bundle -----------------------------------------------------
 echo ">> [5/6] Frontend bundle -> /tmp"
-scp "${SCP_OPTS[@]}" "$DEPLOY/remitm-frontend.tar.gz" "$SRV:/tmp/"
+scp "${SCP_OPTS[@]}" "$DEPLOY/remitz-frontend.tar.gz" "$SRV:/tmp/"
 
 # --- 6. KYC images (large, resumable) ---------------------------------------
 echo ">> [6/6] KYC images (~724 MB, resumable) -> /tmp"
@@ -104,12 +104,12 @@ cat <<EOF
   UPLOAD COMPLETE.
 ------------------------------------------------------------
   Uploaded to:
-    $APP_DIR/remitm-backend/                (backend source)
+    $APP_DIR/remitz-backend/                (backend source)
     $APP_DIR/docker-compose.production.yml
     $APP_DIR/.env.production
-    /tmp/remitm.com.conf
-    /tmp/remitm_production.sql.gz
-    /tmp/remitm-frontend.tar.gz
+    /tmp/remitz.com.conf
+    /tmp/remitz_production.sql.gz
+    /tmp/remitz-frontend.tar.gz
     /tmp/kyc-uploads-legacy.tar.gz
 
   Next, SSH in and continue with DEPLOY-LIVE.md §3:

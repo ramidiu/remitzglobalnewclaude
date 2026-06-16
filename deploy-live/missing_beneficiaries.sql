@@ -3,9 +3,9 @@
 SET SESSION sql_mode='';
 -- 1) OMAR user (no legacy email -> placeholder). Only if not already present.
 INSERT INTO users (uuid,email,phone,password_hash,first_name,last_name,status,email_verified,user_type,kyc_tier,payin_enabled,created_at,updated_at)
-SELECT UUID(),'omar.basheri.19471@migrated.remitm.com','07877999371','OMAR9371','OMAR ABDULATI','BASHERI','ACTIVE',0,'INDIVIDUAL','TIER_0',0,'2025-08-09 17:39:29',NOW()
-FROM dual WHERE NOT EXISTS (SELECT 1 FROM users WHERE email='omar.basheri.19471@migrated.remitm.com');
-SET @omar_id = (SELECT id FROM users WHERE email='omar.basheri.19471@migrated.remitm.com' LIMIT 1);
+SELECT UUID(),'omar.basheri.19471@migrated.remitz.com','07877999371','OMAR9371','OMAR ABDULATI','BASHERI','ACTIVE',0,'INDIVIDUAL','TIER_0',0,'2025-08-09 17:39:29',NOW()
+FROM dual WHERE NOT EXISTS (SELECT 1 FROM users WHERE email='omar.basheri.19471@migrated.remitz.com');
+SET @omar_id = (SELECT id FROM users WHERE email='omar.basheri.19471@migrated.remitz.com' LIMIT 1);
 INSERT INTO beneficiaries (user_id,full_name,email,address,country,delivery_method,mobile_number,bank_name,account_number,swift_bic,iban,branch_state,branch_city,is_blocked,is_favourite,created_at,updated_at) SELECT @omar_id,'OMAR ABDULATI  BASHERI',NULL,'KHARTOUM SUDAN','SD','BANK_DEPOSIT',NULL,'Khartoum Bank','1266898',NULL,NULL,NULL,NULL,0,0,NOW(),NOW() FROM dual WHERE NOT EXISTS (SELECT 1 FROM beneficiaries b WHERE b.user_id=@omar_id AND b.full_name<=>'OMAR ABDULATI  BASHERI' AND b.account_number<=>'1266898');
 INSERT INTO beneficiaries (user_id,full_name,email,address,country,delivery_method,mobile_number,bank_name,account_number,swift_bic,iban,branch_state,branch_city,is_blocked,is_favourite,created_at,updated_at) SELECT 1356,'Sangu kolle',NULL,'Karnataka','SD','CASH_PICKUP',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NOW(),NOW() FROM dual WHERE NOT EXISTS (SELECT 1 FROM beneficiaries b WHERE b.user_id=1356 AND b.full_name<=>'Sangu kolle' AND b.account_number<=>NULL);
 INSERT INTO beneficiaries (user_id,full_name,email,address,country,delivery_method,mobile_number,bank_name,account_number,swift_bic,iban,branch_state,branch_city,is_blocked,is_favourite,created_at,updated_at) SELECT 1356,'',NULL,NULL,'SD','CASH_PICKUP',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NOW(),NOW() FROM dual WHERE NOT EXISTS (SELECT 1 FROM beneficiaries b WHERE b.user_id=1356 AND b.full_name<=>'' AND b.account_number<=>NULL);

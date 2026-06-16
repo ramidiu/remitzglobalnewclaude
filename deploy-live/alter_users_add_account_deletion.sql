@@ -3,7 +3,7 @@
 -- backend jar runs the migration automatically; run this only if applying the
 -- schema change manually ahead of the deploy.
 --
---   docker exec -i remitm-mysql-prod mysql -uroot -p<pw> remitm < alter_users_add_account_deletion.sql
+--   docker exec -i remitz-mysql-prod mysql -uroot -p<pw> remitz < alter_users_add_account_deletion.sql
 --
 ALTER TABLE users
     ADD COLUMN account_status ENUM('ACTIVE','DELETE_REQUESTED','DELETED')

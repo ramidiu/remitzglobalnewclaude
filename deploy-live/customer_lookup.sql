@@ -1,7 +1,7 @@
 -- ============================================================================
 -- Full customer dump. Change the email below if needed.
 -- Run: docker compose -f docker-compose.production.yml exec -T mysql \
---        sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" remitm' < customer_lookup.sql
+--        sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" remitz' < customer_lookup.sql
 -- ============================================================================
 SET @em = 'abdallahishag1988@gmail.com';
 SET @uid = (SELECT id FROM users WHERE email = @em);

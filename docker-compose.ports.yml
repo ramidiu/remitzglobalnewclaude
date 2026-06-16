@@ -1,0 +1,17 @@
+# Local port overrides so the Remitz stack can run alongside the existing Layla
+# stack (which occupies 3310/6382/8095/8096). Use with:
+#   docker compose -f docker-compose.remitz.yml -f docker-compose.ports.yml up -d
+# `!override` replaces the base ports list instead of appending to it.
+services:
+  mysql:
+    ports: !override
+      - "3311:3306"
+  redis:
+    ports: !override
+      - "6383:6379"
+  backend:
+    ports: !override
+      - "8097:8080"
+  frontend:
+    ports: !override
+      - "8098:80"

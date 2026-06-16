@@ -1,16 +1,16 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: remitm-mysql
+    container_name: remitz-mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-}
-      MYSQL_DATABASE: remitm
+      MYSQL_DATABASE: remitz
     ports:
       - "3310:3306"
     volumes:
-      - remitm_mysql_data:/var/lib/mysql
+      - remitz_mysql_data:/var/lib/mysql
     networks:
-      - remitm-network
+      - remitz-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-proot"]
@@ -21,13 +21,13 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: remitm-redis-new
+    container_name: remitz-redis-new
     ports:
       - "6382:6379"
     volumes:
-      - remitm_redis_data:/data
+      - remitz_redis_data:/data
     networks:
-      - remitm-network
+      - remitz-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -36,8 +36,8 @@ services:
       retries: 5
 
   backend:
-    image: remitmproject-backend:latest
-    container_name: remitm-backend
+    image: remitzproject-backend:latest
+    container_name: remitz-backend
     ports:
       - "8095:8080"
     environment:
@@ -58,12 +58,12 @@ services:
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN:-}
       - TWILIO_FROM_NUMBER=${TWILIO_FROM_NUMBER:-}
       - FRONTEND_URL=${FRONTEND_URL:-http://68.169.59.140:8096}
-      - BRAND_NAME=Remitm Money Transfer
-      - BRAND_SUPPORT_EMAIL=support@remitm.com
+      - BRAND_NAME=Remitz Money Transfer
+      - BRAND_SUPPORT_EMAIL=support@remitz.com
       - KUBER_ENABLED=${KUBER_ENABLED:-false}
       - REMIT_ONE_ENABLED=true
       - REMIT_ONE_USERNAME=Abdulazim.mohammed2817
-      - REMIT_ONE_PASSWORD=Aboremitm2007
+      - REMIT_ONE_PASSWORD=Aboremitz2007
       - REMIT_ONE_PIN=12345
       - REMIT_ONE_AGENT_NAME=Universal Securities
     depends_on:
@@ -72,24 +72,24 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - remitm-network
+      - remitz-network
     restart: unless-stopped
 
   frontend:
-    image: remitmproject-frontend:latest
-    container_name: remitm-frontend-new
+    image: remitzproject-frontend:latest
+    container_name: remitz-frontend-new
     ports:
       - "8096:80"
     depends_on:
       - backend
     networks:
-      - remitm-network
+      - remitz-network
     restart: unless-stopped
 
 volumes:
-  remitm_mysql_data:
-  remitm_redis_data:
+  remitz_mysql_data:
+  remitz_redis_data:
 
 networks:
-  remitm-network:
+  remitz-network:
     driver: bridge

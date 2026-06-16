@@ -1,0 +1,123 @@
+# Self-contained, portable stack for running this project (with the bundled production
+# data) on ANY machine — no external volumes, DB auto-restores on first boot.
+#
+#   git clone <repo> && cd remitzglobalnewclaude
+#   docker compose -f docker-compose.portable.yml up -d --build
+#
+# On first start, MySQL imports database/remitz-full.sql.gz (users, beneficiaries,
+# transactions, partners, etc.). The backend then runs Flyway (no-op, already at v551)
+# and serves the data. Frontend: http://localhost:8098  Backend: http://localhost:8097
+#
+# Env (Brevo key, JWT secret, MySQL password) is read from the committed .env file.
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: remitz-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: remitz
+    ports:
+      - "3311:3306"
+    volumes:
+      - remitz_mysql_data:/var/lib/mysql
+      # Auto-imported ONLY on a fresh (empty) data volume — restores the bundled dump.
+      - ./database/remitz-full.sql.gz:/docker-entrypoint-initdb.d/01-remitz-full.sql.gz:ro
+    networks:
+      - remitz-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 120s
+
+  redis:
+    image: redis:7-alpine
+    container_name: remitz-redis-new
+    ports:
+      - "6383:6379"
+    volumes:
+      - remitz_redis_data:/data
+    networks:
+      - remitz-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./remitz-backend
+      dockerfile: Dockerfile
+    container_name: remitz-backend
+    ports:
+      - "8097:8080"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET:-remitz-super-secret-key-that-is-at-least-256-bits-long-for-hs256}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - EXCHANGE_RATES_API_KEY=${EXCHANGE_RATES_API_KEY:-}
+      # Brevo (Sendinblue) email API — sender for all outbound email.
+      - BREVO_API_KEY=${BREVO_API_KEY:-}
+      - BREVO_FROM_EMAIL=${BREVO_FROM_EMAIL:-ramidiu@kreativwebsolutions.com}
+      - BREVO_FROM_NAME=${BREVO_FROM_NAME:-Remitz}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID:-}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN:-}
+      - TWILIO_FROM_NUMBER=${TWILIO_FROM_NUMBER:-}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:8098}
+      - BRAND_NAME=Remitz Money Transfer
+      - BRAND_SUPPORT_EMAIL=support@remitz.com
+      - BRAND_LOGO_URL=${BRAND_LOGO_URL:-}
+      - KUBER_ENABLED=${KUBER_ENABLED:-false}
+      - FIRE_API_BASE=${FIRE_API_BASE:-https://api.fire.com}
+      - FIRE_PAYMENTS_BASE=${FIRE_PAYMENTS_BASE:-https://payments.fire.com}
+      - FIRE_CLIENT_ID=${FIRE_CLIENT_ID:-}
+      - FIRE_REFRESH_TOKEN=${FIRE_REFRESH_TOKEN:-}
+      - FIRE_CLIENT_KEY=${FIRE_CLIENT_KEY:-}
+      - FIRE_ICAN_TO=${FIRE_ICAN_TO:-52363}
+      - NSANO_BASE_URL=${NSANO_BASE_URL:-https://stream.instantcredit.services}
+      - NSANO_API_KEY=${NSANO_API_KEY:-}
+      - ZEEPAY_URL=${ZEEPAY_URL:-https://shop.digitaltermination.com/}
+      - ZEEPAY_TOKEN=${ZEEPAY_TOKEN:-}
+      - REMIT_ONE_ENABLED=${REMIT_ONE_ENABLED:-true}
+      - REMIT_ONE_USERNAME=${REMIT_ONE_USERNAME:-Abdulazim.mohammed2817}
+      - REMIT_ONE_PASSWORD=${REMIT_ONE_PASSWORD:-Aboremitz2007}
+      - REMIT_ONE_PIN=${REMIT_ONE_PIN:-12345}
+      - REMIT_ONE_URL=${REMIT_ONE_URL:-https://remitby.remitone.com/universalsecurities/ws/compliance/insertTransactionForCompliance}
+      - REMIT_ONE_AGENT_NAME=${REMIT_ONE_AGENT_NAME:-Universal Securities}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - remitz_kyc_uploads:/app/kyc-uploads
+    networks:
+      - remitz-network
+
+  frontend:
+    build:
+      context: ./remitzmoneytransfernew
+      dockerfile: Dockerfile
+    container_name: remitz-frontend-new
+    ports:
+      - "8098:80"
+    depends_on:
+      - backend
+    networks:
+      - remitz-network
+
+volumes:
+  remitz_mysql_data:
+  remitz_redis_data:
+  remitz_kyc_uploads:
+
+networks:
+  remitz-network:
+    driver: bridge
