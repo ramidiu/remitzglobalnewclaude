@@ -495,7 +495,7 @@ import { environment } from '../../../environments/environment';
             <h4 class="ct-subsection">Cash Collection Point</h4>
             <div class="ct-form-grid">
               <div class="ct-field ct-field--full" *ngIf="isUsiCountry() && usiCollectionPoints.length > 0">
-                <label>Collection Point (from USI)</label>
+                <label>Collection Point</label>
                 <select (change)="applyUsiCashPoint($any($event.target).value)">
                   <option value="">— pick or fill manually —</option>
                   <option *ngFor="let p of usiCollectionPoints" [value]="p.code">
