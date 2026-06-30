@@ -30,7 +30,7 @@ services:
       MYSQL_DATABASE: remitz
     command: ["--default-authentication-plugin=mysql_native_password"]
     ports:
-      - "127.0.0.1:3307:3306"      # localhost-only admin/import (3306 is the host's own MySQL)
+      - "127.0.0.1:3308:3306"      # localhost-only admin/import (3306 is the host's own MySQL)
     volumes:
       - remitz_live_mysql_data:/var/lib/mysql
     networks: [remitz-live-network]
@@ -70,7 +70,7 @@ services:
       - REDIS_PORT=6379
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate   # schema already imported; do not auto-mutate
     ports:
-      - "127.0.0.1:8086:8080"      # localhost-only; host nginx proxies /api -> here (test uses 8085)
+      - "127.0.0.1:8087:8080"      # localhost-only; host nginx proxies /api -> here (test uses 8085)
     depends_on:
       mysql:
         condition: service_healthy

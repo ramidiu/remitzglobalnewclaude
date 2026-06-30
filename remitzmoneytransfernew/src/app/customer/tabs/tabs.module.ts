@@ -74,6 +74,14 @@ const routes: Routes = [
         path: 'trust-callback',
         loadChildren: () => import('../trust-callback/trust-callback.module').then(m => m.TrustCallbackPageModule)
       },
+      {
+        path: 'volume-callback',
+        loadChildren: () => import('../volume-callback/volume-callback.module').then(m => m.VolumeCallbackPageModule)
+      },
+      {
+        path: 'volume-pay',
+        loadChildren: () => import('../volume-pay/volume-pay.module').then(m => m.VolumePayPageModule)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

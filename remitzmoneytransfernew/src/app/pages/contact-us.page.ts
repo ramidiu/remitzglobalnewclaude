@@ -12,24 +12,24 @@ import { Component } from '@angular/core';
     <div class="info-body">
       <div class="info-contact-row">
         <ion-icon name="location-outline"></ion-icon>
-        <div><strong>Registered Office</strong><br>20 Kirkdale Road, London, E11 1HP, United Kingdom</div>
+        <div><strong>Registered Office</strong><br>193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom</div>
       </div>
       <div class="info-contact-row">
         <ion-icon name="call-outline"></ion-icon>
         <div><strong>Phone</strong><br>
-          <a href="tel:+442085560888">020 8556 0888</a>
+          <a href="tel:+442085560888">020 7272 8722</a>
         </div>
       </div>
       <div class="info-contact-row">
         <ion-icon name="mail-outline"></ion-icon>
         <div><strong>Email</strong><br>
-          <a href="mailto:info@remitz.com">info@remitz.com</a>
+          <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a>
         </div>
       </div>
       <div class="info-contact-row">
         <ion-icon name="globe-outline"></ion-icon>
         <div><strong>Website</strong><br>
-          <a href="https://www.remitz.com">www.remitz.com</a>
+          <a href="https://www.remitz.co.uk">www.remitz.co.uk</a>
         </div>
       </div>
 

@@ -10,8 +10,8 @@ import { Component } from '@angular/core';
       <p>Effective Date: 24 June 2025</p>
     </div>
     <div class="info-body">
-      <p>Remitz Limited, a company incorporated in England with registration number 07956213, whose registered office is 20 Kirkdale Road, London, E11 1HP, is authorised and regulated by the Financial Conduct Authority (FCA) under the Payment Services Regulations as a Small Payment Institution, FCA registration number 584554, trading under the name "Remitz" (hereinafter "we", "our" or "us"). Remitz is also a registered Money Services Business with HM Revenue &amp; Customs (No. XHML00000105906).</p>
-      <p>These Terms and Conditions are applicable to and available on our website www.remitz.com. They explain your responsibilities to us and our responsibilities to you, how and when our agreement with you can be terminated and the extent of our liability to you. When you register on our website and use any of our services described in these Terms and Conditions, you are agreeing to be bound by them. Please do not use any of our services if you do not accept these Terms and Conditions.</p>
+      <p>Remitz Limited, a company incorporated in England with registration number 07956213, whose registered office is 193 Seven Sisters Road, Finsbury Park, London N4 3NG, is authorised and regulated by the Financial Conduct Authority (FCA) under the Payment Services Regulations as a Small Payment Institution, FCA registration number 520583, trading under the name "Remitz" (hereinafter "we", "our" or "us"). Remitz is also a registered Money Services Business with HM Revenue &amp; Customs (No. XAML00000177279).</p>
+      <p>These Terms and Conditions are applicable to and available on our website www.remitz.co.uk. They explain your responsibilities to us and our responsibilities to you, how and when our agreement with you can be terminated and the extent of our liability to you. When you register on our website and use any of our services described in these Terms and Conditions, you are agreeing to be bound by them. Please do not use any of our services if you do not accept these Terms and Conditions.</p>
 
       <h2>1. Overview &amp; Eligibility</h2>
       <p>These Terms and Conditions govern the provision by us of payment services consisting of the execution of payment transactions ordered by you through our website. Our obligations are conditional upon our acceptance of you as a user, which is at our sole discretion. You must be at least 18 years old and legally able to enter into a binding contract, and you must provide accurate, current and complete information when registering and using the service.</p>
@@ -41,8 +41,8 @@ import { Component } from '@angular/core';
       <p>We may update these Terms from time to time. Continued use of the Service after changes are posted constitutes acceptance of the updated Terms.</p>
 
       <h2>10. Contact</h2>
-      <p>Questions about these Terms? Call us on <a href="tel:+442085560888">020 8556 0888</a>, email <a href="mailto:info@remitz.com">info@remitz.com</a>, or see our <a href="/contact-us">Contact page</a>.</p>
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. FCA registration number: 584554. HMRC MSB No: XHML00000105906. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom.</p>
+      <p>Questions about these Terms? Call us on <a href="tel:+442085560888">020 7272 8722</a>, email <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a>, or see our <a href="/contact-us">Contact page</a>.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. FCA registration number: 520583. HMRC MSB No: XAML00000177279. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom.</p>
     </div>
   </div></ion-content>`
 })

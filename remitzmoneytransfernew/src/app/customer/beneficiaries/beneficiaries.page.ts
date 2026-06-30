@@ -549,6 +549,17 @@ export class BeneficiariesPage implements OnInit, OnDestroy {
     return this.addForm.value.deliveryMethod === 'BANK_DEPOSIT' && this.routeGateway === 'ZEEPAY';
   }
 
+  /**
+   * MANUAL routing bank deposit (e.g. India) — no live gateway (Nsano/Zeepay), not a USI IBAN /
+   * Sudan / no-SWIFT corridor. Renders the simple remitzglobal-style form: Bank Name + Account
+   * Number + bank code (IFSC/SWIFT). No Branch Name / Bank State / Bank City.
+   */
+  isManualGateway(): boolean {
+    return this.addForm.value.deliveryMethod === 'BANK_DEPOSIT'
+      && !this.isNsanoBank() && !this.isZeepayBank() && !this.isSudan()
+      && !this.isIbanCountry() && !this.isNoSwiftCountry();
+  }
+
   /** Friendly gateway name shown to the customer ("via Nsano" / "via Zeepay"); '' for MANUAL/none. */
   gatewayName(gw: string): string {
     switch ((gw || '').toUpperCase()) {
@@ -754,6 +765,14 @@ export class BeneficiariesPage implements OnInit, OnDestroy {
         }
         this.addForm.get('address')!.setValidators(this.addressOptional() ? [] : [Validators.required]);
         this.addForm.get('relationship')!.setValidators([Validators.required]);
+        // MANUAL routing (e.g. India): remitzglobal-style form — Bank Name + Account Number + bank
+        // code (IFSC/SWIFT) + name/relationship/address. No Branch Name / Bank State / Bank City.
+        if (this.isManualGateway()) {
+          // Manual form order: Full Name -> Mobile -> Bank Name/Account/bank code.
+          this.addForm.get('mobileNumber')!.setValidators([Validators.required, Validators.minLength(7)]);
+          this.addForm.get('swiftBic')!.setValidators([Validators.required]);
+          break;
+        }
         this.addForm.get('sortCode')!.setValidators([Validators.required]);
         this.addForm.get('branchState')!.setValidators([Validators.required]);
         this.addForm.get('branchCity')!.setValidators([Validators.required]);

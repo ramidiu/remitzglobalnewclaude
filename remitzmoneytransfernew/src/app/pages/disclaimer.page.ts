@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
 
       <p>No liability is borne by Remitz, its related associates, nor providers of information to users, or third parties for the accuracy of information or models contained in this website, or any omissions or errors therein. Remitz or its providers of information will not have any liability for the use, interpretation or implementation of the information or models contained herein by any user.</p>
 
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom. Tel: 020 8556 0888. E-mail: info@remitz.com. Website: www.remitz.com.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom. Tel: 020 7272 8722. E-mail: info@remitz.co.uk. Website: www.remitz.co.uk.</p>
       <p><a href="/contact-us">Contact us &rarr;</a></p>
     </div>
   </div></ion-content>`

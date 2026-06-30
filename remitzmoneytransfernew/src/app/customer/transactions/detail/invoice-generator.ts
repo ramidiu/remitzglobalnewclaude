@@ -6,7 +6,7 @@
 // - Billed To / From columns
 // - 4-row line-item table with description + subtitle
 // - Totals block on the right with Subtotal / VAT / Total
-// - Footer with payment note and remitz.com link
+// - Footer with payment note and remitz.co.uk link
 //
 // Uses jsPDF loaded on-demand from a public CDN so the Angular build doesn't
 // need a new npm dependency. Calls doc.save() to trigger a real browser
@@ -28,7 +28,7 @@ const COLORS = {
   sub: [107, 114, 128] as [number, number, number],         // muted grey
   line: [226, 230, 238] as [number, number, number],        // very light separator
   tableHead: [243, 245, 251] as [number, number, number],   // subtle lavender-blue strip
-  accent: [30, 64, 175] as [number, number, number],        // blue used for "BILLED TO" / "FROM" / remitz.com
+  accent: [30, 64, 175] as [number, number, number],        // blue used for "BILLED TO" / "FROM" / remitz.co.uk
   navy: [27, 58, 107] as [number, number, number]           // Remitz brand navy
 };
 
@@ -259,7 +259,7 @@ function drawParties(doc: any, profile: UserResponse | null): void {
     'Finsbury Park, London, N4 3NG',
     'United Kingdom'
   ];
-  const fromEmail = 'support@remitz.com';
+  const fromEmail = 'support@remitz.co.uk';
   const fromPhone = '+44 (0) 203 000 0000';
 
   // Name — bold
@@ -489,5 +489,5 @@ function drawFooter(doc: any): void {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.accent);
-  doc.text('remitz.com', RIGHT_X, footerY + 22, { align: 'right' });
+  doc.text('remitz.co.uk', RIGHT_X, footerY + 22, { align: 'right' });
 }

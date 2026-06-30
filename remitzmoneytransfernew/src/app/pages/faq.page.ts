@@ -35,7 +35,7 @@ import { Component } from '@angular/core';
       <p>Open the transaction in your account and tap <strong>View Receipt</strong> or <strong>Download Receipt</strong>.</p>
 
       <h2>How do I contact support?</h2>
-      <p>Email <a href="mailto:info@remitz.com">info@remitz.com</a> or see our <a href="/contact-us">Contact page</a>.</p>
+      <p>Email <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a> or see our <a href="/contact-us">Contact page</a>.</p>
     </div>
   </div></ion-content>`
 })

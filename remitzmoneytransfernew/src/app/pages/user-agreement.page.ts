@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
       <p>Effective Date: 24 June 2025</p>
     </div>
     <div class="info-body">
-      <p>This User Agreement covers your Remitz Money Transfer account and your relationship with Remitz Limited (a company registered in England &amp; Wales, Company Registration No: 07956213, FCA registration number 584554). It should be read together with our <a href="/terms">Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.</p>
+      <p>This User Agreement covers your Remitz Money Transfer account and your relationship with Remitz Limited (a company registered in England &amp; Wales, Company Registration No: 07956213, FCA registration number 520583). It should be read together with our <a href="/terms">Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.</p>
 
       <h2>1. Your Account</h2>
       <p>You are responsible for keeping your login credentials confidential and for all activity under your account. Notify us immediately of any unauthorised access. You must provide accurate information and keep it up to date.</p>
@@ -34,8 +34,8 @@ import { Component } from '@angular/core';
       <p>We may update this agreement from time to time. Continued use of your account after changes are posted means you accept them.</p>
 
       <h2>8. Contact</h2>
-      <p>Call us on <a href="tel:+442085560888">020 8556 0888</a>, email <a href="mailto:info@remitz.com">info@remitz.com</a>, or visit our <a href="/contact-us">Contact page</a>.</p>
-      <p class="info-muted">Remitz Limited, registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom.</p>
+      <p>Call us on <a href="tel:+442085560888">020 7272 8722</a>, email <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a>, or visit our <a href="/contact-us">Contact page</a>.</p>
+      <p class="info-muted">Remitz Limited, registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom.</p>
     </div>
   </div></ion-content>`
 })

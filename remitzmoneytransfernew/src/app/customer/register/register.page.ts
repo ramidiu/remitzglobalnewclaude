@@ -74,7 +74,7 @@ export class RegisterPage implements OnInit {
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       password: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator]],
       confirmPassword: ['', [Validators.required]],
-      agreeTerms: [false]
+      agreeTerms: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
 
     this.phoneDigits = 10;
@@ -121,6 +121,11 @@ passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
   }
 
   onRegister(): void {
+    if (!this.registerForm.get('agreeTerms')?.value) {
+      this.registerForm.get('agreeTerms')?.markAsTouched();
+      this.showToast('Please agree to the Terms of Service and Privacy Policy to continue', 'warning');
+      return;
+    }
     if (this.registerForm.invalid) {
       Object.keys(this.registerForm.controls).forEach(key => {
         this.registerForm.get(key)?.markAsTouched();

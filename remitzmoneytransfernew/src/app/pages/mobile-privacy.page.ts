@@ -37,11 +37,11 @@ import { Component } from '@angular/core';
       <p>Data is transmitted over encrypted (SSL/TLS) connections and stored securely. Access is restricted to authorised personnel.</p>
 
       <h2>Your Rights</h2>
-      <p>You may request access, correction, or deletion of your data by emailing <a href="mailto:info@remitz.com">info@remitz.com</a>.</p>
+      <p>You may request access, correction, or deletion of your data by emailing <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a>.</p>
 
       <h2>Changes</h2>
       <p>We may update this policy and will post changes here. Continued use of the app means you accept the updated policy.</p>
-      <p class="info-muted">Remitz Limited, registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom. Tel: 020 8556 0888.</p>
+      <p class="info-muted">Remitz Limited, registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom. Tel: 020 7272 8722.</p>
     </div>
   </div></ion-content>`
 })

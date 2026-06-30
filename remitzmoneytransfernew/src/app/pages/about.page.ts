@@ -35,7 +35,7 @@ import { Component } from '@angular/core';
       <h2>Our Team</h2>
       <p>We have a dedicated and diverse all round team who are empowered to deliver best value and service to our customers through our branded and digital solutions.</p>
 
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom.</p>
       <p><a href="/contact-us">Contact us &rarr;</a></p>
     </div>
   </div></ion-content>`

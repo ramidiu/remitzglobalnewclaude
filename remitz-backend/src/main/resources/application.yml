@@ -156,7 +156,7 @@ trust:
     verify-enabled: ${TRUST_WS_VERIFY_ENABLED:false}
     alias: ${TRUST_WS_ALIAS:}
     password: ${TRUST_WS_PASSWORD:}
-    sitereference: ${TRUST_WS_SITEREFERENCE:test_remitz107329}
+    sitereference: ${TRUST_WS_SITEREFERENCE:test_laylalondo147950}
 
 # Open Banking pay-in via Fire (fire.com) — PIS. Defaults are Remitz pre-prod/test.
 fire:
@@ -169,6 +169,17 @@ fire:
   # Fire requires a valid PUBLIC https return URL (rejects localhost). For local dev the
   # final redirect lands on this domain; set FIRE_RETURN_URL to your real callback in prod.
   return-url: ${FIRE_RETURN_URL:https://sendmoney.remitz.com/home/trust-callback}
+
+# Volume open-banking pay-in (Internet Bank Transfer). Ported from the Layla project.
+# Set VOLUME_APPLICATION_ID to your own Volume application id.
+volume:
+  enabled: ${VOLUME_ENABLED:true}
+  applicationId: ${VOLUME_APPLICATION_ID:30f61de5-013a-405a-9ae2-e01ae02036e2}
+  paymentUrl: ${VOLUME_PAYMENT_URL:https://api.volumepay.io/api/paymentintents/link}
+  paymentStatusUrl: ${VOLUME_PAYMENT_STATUS_URL:https://api.volumepay.io/api/paymentintents/}
+  pemUrl: ${VOLUME_PEM_URL:https://api.volumepay.io/.well-known/signature/pem}
+  environment: ${VOLUME_ENVIRONMENT:SANDBOX}
+  jsUrl: ${VOLUME_JS_URL:https://js.volumepay.io}
 
 # Nsano payout (Ghana mobile money / bank). Defaults are Remitz staging/test.
 nsano:

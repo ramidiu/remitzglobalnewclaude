@@ -350,16 +350,16 @@
                  alt="Credit / Debit Card — Trust Payments" />
           </label>
 
-          <label class="payment-method-option"
+          <label class="payment-method-option payment-method-option--icon-only"
                  [class.payment-method-option--active]="selectedPaymentMethod === 'OPEN_BANKING'"
                  [class.payment-method-option--locked]="submitting || transactionCreated"
                  (click)="(submitting || transactionCreated) ? null : (selectedPaymentMethod = 'OPEN_BANKING')"
-                 title="Internet Bank Transfer — Open Banking">
+                 title="Internet Bank Transfer — Open Banking (Pay by Bank)">
             <span class="payment-method-option__radio"></span>
-            <span class="payment-method-option__ob">
-              <ion-icon name="business-outline"></ion-icon>
-              Internet Bank Transfer
-            </span>
+            <img src="https://docs.getvolume.com/before-selecing-bank-button-new.gif"
+                 class="payment-method-option__hero"
+                 alt="Internet Bank Transfer — Pay by Bank"
+                 onerror="this.onerror=null;this.src='assets/payment-icons/volume.svg'" />
           </label>
         </div>
       </div>
@@ -429,6 +429,24 @@
                      style="width:16px;height:16px;margin-right:6px;"></ion-spinner>
         {{ submitting ? ('SEND_MONEY.CREATING' | translate) : ('SEND_MONEY.CONFIRM_SEND' | translate) }}
       </button>
+    </div>
+
+    <!-- Step 2 (Open Banking / Internet Bank Transfer): Volume Pay widget renders here -->
+    <div id="volume-pay-section" *ngIf="transactionCreated && selectedPaymentMethod === 'OPEN_BANKING'" class="volume-pay-section" style="margin-top:16px;">
+      <div class="volume-pay-section__created" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <ion-icon name="checkmark-circle-outline" style="font-size:22px;color:#16a34a;"></ion-icon>
+        <div>
+          <div class="volume-pay-section__title" style="font-weight:600;">Transfer created</div>
+          <div class="volume-pay-section__ref" style="font-size:12px;color:#64748b;">Ref: {{ createdTxnRef }}</div>
+        </div>
+      </div>
+      <p class="volume-pay-section__hint" style="font-size:13px;color:#475569;">Complete your payment using your bank below.</p>
+      <div *ngIf="!volumePayStarted" class="volume-pay-section__loading-wrap" style="font-size:13px;color:#64748b;">
+        <ion-spinner name="crescent" style="width:20px;height:20px;vertical-align:middle;margin-right:8px;"></ion-spinner>
+        Loading secure bank payment…
+      </div>
+      <!-- Volume Pay SDK injects the "Pay by Bank" button here -->
+      <div id="volume-element-container" class="volume-element-container"></div>
     </div>
 
   </section>

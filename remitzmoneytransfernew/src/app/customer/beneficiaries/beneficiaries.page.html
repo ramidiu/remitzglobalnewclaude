@@ -76,9 +76,10 @@
             </div>
           </div>
 
-          <!-- Common fields for Bank Deposit and Cash Pickup -->
+          <!-- Common fields for Bank Deposit and Cash Pickup. Hidden for MANUAL bank deposit
+               (e.g. India) — remitzglobal's bank-deposit form has no recipient mobile field. -->
           <ng-container *ngIf="addForm.value.deliveryMethod === 'BANK_DEPOSIT' || addForm.value.deliveryMethod === 'CASH_PICKUP'">
-            <div class="fb-field" *ngIf="!isNsanoBank()">
+            <div class="fb-field" *ngIf="!isNsanoBank() && !isManualGateway()">
               <label class="fb-field__label">{{ 'BENEFICIARIES.MOBILE_NUMBER' | translate }} *</label>
               <div class="fb-phone-row">
                 <span class="fb-dial-code" *ngIf="dialCode">{{ dialCode }}</span>
@@ -94,10 +95,69 @@
 
           <!-- Bank Deposit fields -->
           <ng-container *ngIf="addForm.value.deliveryMethod === 'BANK_DEPOSIT'">
-            <div class="fb-field-section-header">{{ 'BENEFICIARIES.BANK_DEPOSIT_DETAILS' | translate }}</div>
+            <!-- Section header for non-manual corridors (manual renders its own below, after name + mobile) -->
+            <div class="fb-field-section-header" *ngIf="!isManualGateway()">{{ 'BENEFICIARIES.BANK_DEPOSIT_DETAILS' | translate }}</div>
+
+            <!-- MANUAL routing: remitzglobal-style form in order Full Name → Mobile → Bank Details (dynamic per country) -->
+            <ng-container *ngIf="isManualGateway()">
+              <div class="fb-field">
+                <label class="fb-field__label">{{ 'BENEFICIARIES.FULL_NAME' | translate }} *</label>
+                <input type="text" appLatinName class="fb-input" formControlName="fullName"
+                  [placeholder]="'BENEFICIARIES.FULL_NAME_PLACEHOLDER' | translate"
+                  autocomplete="new-password" autocorrect="off" spellcheck="false"
+                  [class.fb-input--error]="(addFormSubmitted || addForm.get('fullName')?.touched) && addForm.get('fullName')?.invalid" />
+                <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('fullName')?.touched) && addForm.get('fullName')?.hasError('required')">
+                  {{ 'BENEFICIARIES.ERROR_FULL_NAME' | translate }}
+                </div>
+              </div>
+              <div class="fb-field">
+                <label class="fb-field__label">{{ 'BENEFICIARIES.MOBILE_NUMBER' | translate }} *</label>
+                <div class="fb-phone-row">
+                  <span class="fb-dial-code" *ngIf="dialCode">{{ dialCode }}</span>
+                  <input type="tel" class="fb-input fb-input--phone" formControlName="mobileNumber"
+                    [placeholder]="'BENEFICIARIES.MOBILE_PLACEHOLDER' | translate"
+                    [class.fb-input--error]="(addFormSubmitted || addForm.get('mobileNumber')?.touched) && addForm.get('mobileNumber')?.invalid" />
+                </div>
+                <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('mobileNumber')?.touched) && addForm.get('mobileNumber')?.hasError('required')">
+                  {{ 'BENEFICIARIES.ERROR_MOBILE' | translate }}
+                </div>
+              </div>
+              <div class="fb-field-section-header">{{ 'BENEFICIARIES.BANK_DEPOSIT_DETAILS' | translate }}</div>
+              <div class="fb-field">
+                <label class="fb-field__label">Bank Name *</label>
+                <select class="fb-input fb-native-select" formControlName="bankName"
+                  [class.fb-input--error]="(addFormSubmitted || addForm.get('bankName')?.touched) && addForm.get('bankName')?.invalid">
+                  <option value="" disabled>{{ bankNames.length === 0 ? ('BENEFICIARIES.LOADING_BANKS' | translate) : ('BENEFICIARIES.BANK_PLACEHOLDER' | translate) }}</option>
+                  <option *ngFor="let b of bankNames" [value]="b">{{ b }}</option>
+                </select>
+                <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('bankName')?.touched) && addForm.get('bankName')?.hasError('required')">
+                  {{ 'BENEFICIARIES.ERROR_BANK_NAME' | translate }}
+                </div>
+              </div>
+              <div class="fb-field">
+                <label class="fb-field__label">Account Number *</label>
+                <input type="text" class="fb-input" formControlName="accountNumber" placeholder="Account number"
+                  [class.fb-input--error]="(addFormSubmitted || addForm.get('accountNumber')?.touched) && addForm.get('accountNumber')?.invalid" />
+                <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('accountNumber')?.touched) && addForm.get('accountNumber')?.hasError('required')">
+                  Account number is required
+                </div>
+                <div class="fb-field__error" *ngIf="addForm.get('accountNumber')?.touched && addForm.get('accountNumber')?.hasError('minlength')">
+                  Account number must be at least 5 digits
+                </div>
+              </div>
+              <div class="fb-field">
+                <label class="fb-field__label">{{ bankCodeLabel }} *</label>
+                <input type="text" class="fb-input" formControlName="swiftBic" [placeholder]="bankCodePlaceholder"
+                  [class.fb-input--error]="(addFormSubmitted || addForm.get('swiftBic')?.touched) && addForm.get('swiftBic')?.invalid" />
+                <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('swiftBic')?.touched) && addForm.get('swiftBic')?.hasError('required')">
+                  {{ bankCodeLabel }} is required
+                </div>
+                <div class="fb-field__hint" *ngIf="bankCodeFormat">Format: {{ bankCodeFormat }}</div>
+              </div>
+            </ng-container>
 
             <!-- Account Number FIRST (identifier-first order, matching the old site) -->
-            <div class="fb-field">
+            <div class="fb-field" *ngIf="!isManualGateway()">
               <label class="fb-field__label">Account Number *
                 <span class="acct-typehint" *ngIf="isNsanoBank()">(please type — don't copy-paste)</span>
               </label>
@@ -114,8 +174,8 @@
               <div class="fb-field__hint" *ngIf="isIbanCountry()">For Saudi Arabia / UAE / Turkey / Qatar this is the IBAN. You can paste it here and into the IBAN field below.</div>
             </div>
 
-            <!-- Bank — selected AFTER the account number -->
-            <div class="fb-field">
+            <!-- Bank — selected AFTER the account number (non-manual corridors only) -->
+            <div class="fb-field" *ngIf="!isManualGateway()">
               <label class="fb-field__label">Bank Name *</label>
               <select class="fb-input fb-native-select" formControlName="bankName"
                 [class.fb-input--error]="(addFormSubmitted || addForm.get('bankName')?.touched) && addForm.get('bankName')?.invalid">
@@ -138,21 +198,21 @@
               </div>
             </div>
 
-            <div class="fb-field" *ngIf="!isSudan() && !isNsanoBank()">
+            <div class="fb-field" *ngIf="!isSudan() && !isNsanoBank() && !isManualGateway()">
               <label class="fb-field__label">Branch Name *</label>
               <input type="text" class="fb-input" formControlName="sortCode"
-                placeholder="e.g. First Abu Dhabi Bank"
+                placeholder="Branch name"
                 [class.fb-input--error]="(addFormSubmitted || addForm.get('sortCode')?.touched) && addForm.get('sortCode')?.invalid" />
               <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('sortCode')?.touched) && addForm.get('sortCode')?.hasError('required')">
                 Branch name is required
               </div>
             </div>
 
-            <div class="fb-field-row" *ngIf="!isSudan() && !isNsanoBank()">
+            <div class="fb-field-row" *ngIf="!isSudan() && !isNsanoBank() && !isManualGateway()">
               <div class="fb-field">
                 <label class="fb-field__label">Bank State *</label>
                 <input type="text" class="fb-input" formControlName="branchState"
-                  placeholder="Any Branch"
+                  placeholder="State / Province"
                   [class.fb-input--error]="(addFormSubmitted || addForm.get('branchState')?.touched) && addForm.get('branchState')?.invalid" />
                 <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('branchState')?.touched) && addForm.get('branchState')?.hasError('required')">
                   Bank state is required
@@ -161,7 +221,7 @@
               <div class="fb-field">
                 <label class="fb-field__label">Bank City *</label>
                 <input type="text" class="fb-input" formControlName="branchCity"
-                  placeholder="Any Branch"
+                  placeholder="City"
                   [class.fb-input--error]="(addFormSubmitted || addForm.get('branchCity')?.touched) && addForm.get('branchCity')?.invalid" />
                 <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('branchCity')?.touched) && addForm.get('branchCity')?.hasError('required')">
                   Bank city is required
@@ -184,9 +244,9 @@
               <div class="fb-field__hint">For Saudi Arabia, UAE, Turkey, Qatar — IBAN is required (no SWIFT needed)</div>
             </div>
 
-            <!-- SWIFT — only for non-IBAN, non-Egypt countries -->
-            <div class="fb-field" *ngIf="!isIbanCountry() && !isNoSwiftCountry() && !isSudan() && !isNsanoBank()">
-              <label class="fb-field__label">{{ 'BENEFICIARIES.SWIFT_CODE' | translate }} *</label>
+            <!-- SWIFT — only for non-IBAN, non-Egypt countries (manual uses the block above) -->
+            <div class="fb-field" *ngIf="!isIbanCountry() && !isNoSwiftCountry() && !isSudan() && !isNsanoBank() && !isManualGateway()">
+              <label class="fb-field__label">{{ bankCodeLabel }} *</label>
               <input type="text" class="fb-input" formControlName="swiftBic" [placeholder]="bankCodePlaceholder"
                 [class.fb-input--error]="(addFormSubmitted || addForm.get('swiftBic')?.touched) && addForm.get('swiftBic')?.invalid" />
               <div class="fb-field__error" *ngIf="(addFormSubmitted || addForm.get('swiftBic')?.touched) && addForm.get('swiftBic')?.hasError('required')">
@@ -355,7 +415,7 @@
           <!-- Recipient name LAST: auto-fills from the live Nsano/Zeepay lookup once the
                mobile/account number above is entered. LOCKED once the gateway verifies it —
                only editable on MANUAL corridors / when verification is unavailable. -->
-          <div class="fb-field">
+          <div class="fb-field" *ngIf="!isManualGateway()">
             <label class="fb-field__label">
               {{ 'BENEFICIARIES.FULL_NAME' | translate }} *
               <span class="gateway-tag" *ngIf="routeSupportsNameCheck && gatewayName(routeGateway)"

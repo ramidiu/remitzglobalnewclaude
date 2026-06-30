@@ -65,7 +65,8 @@ services:
       # publicly reachable host (NOT localhost) or the logo/links break in delivered mail.
       - FRONTEND_URL=${FRONTEND_URL:-https://www.remitz.com}
       - BRAND_NAME=Remitz Money Transfer
-      - BRAND_SUPPORT_EMAIL=support@remitz.com
+      - BRAND_SUPPORT_EMAIL=${BRAND_SUPPORT_EMAIL:-support@remitz.co.uk}
+      - BRAND_ADDRESS=${BRAND_ADDRESS:-193 Seven Sisters Road, Finsbury Park, London N4 3NG}
       # Optional override for the email logo; blank = derive from FRONTEND_URL (/assets/images/email-logo.png).
       - BRAND_LOGO_URL=${BRAND_LOGO_URL:-}
       - KUBER_ENABLED=${KUBER_ENABLED:-false}
@@ -75,6 +76,10 @@ services:
       - FIRE_REFRESH_TOKEN=${FIRE_REFRESH_TOKEN:-}
       - FIRE_CLIENT_KEY=${FIRE_CLIENT_KEY:-}
       - FIRE_ICAN_TO=${FIRE_ICAN_TO:-52363}
+      # Volume open-banking (Internet Bank Transfer) — set VOLUME_APPLICATION_ID to your own Volume app id.
+      - VOLUME_ENABLED=${VOLUME_ENABLED:-true}
+      - VOLUME_APPLICATION_ID=${VOLUME_APPLICATION_ID:-30f61de5-013a-405a-9ae2-e01ae02036e2}
+      - VOLUME_ENVIRONMENT=${VOLUME_ENVIRONMENT:-SANDBOX}
       # Nsano payout (Ghana) — LIVE creds from laylaremitz (host stream.instantcredit.services).
       - NSANO_BASE_URL=${NSANO_BASE_URL:-https://stream.instantcredit.services}
       - NSANO_API_KEY=${NSANO_API_KEY:-}

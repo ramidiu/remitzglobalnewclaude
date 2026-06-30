@@ -51,6 +51,13 @@ export class SendMoneyPage implements OnInit, OnDestroy, ViewWillEnter {
   // Payment method selection
   selectedPaymentMethod: 'CARD' | 'OPEN_BANKING' = 'CARD';
 
+  // Volume Pay (Open Banking / Internet Bank Transfer) state
+  volumeReady = false;
+  volumePayStarted = false;
+  merchantPaymentId = '';
+  private volumeInstance: any = null;
+  private volumeScriptEl: HTMLScriptElement | null = null;
+
   // Transaction creation state
   transactionCreated = false;
   createdTxnRef = '';
@@ -890,7 +897,12 @@ export class SendMoneyPage implements OnInit, OnDestroy, ViewWillEnter {
             try { sessionStorage.removeItem('remitz_send_draft'); } catch {}
 
             if (this.selectedPaymentMethod === 'OPEN_BANKING') {
-              this.payWithOpenBanking(txn);
+              this.createdTxnRef = txn?.referenceNumber || this.createdTxnRef;
+              this.merchantPaymentId = this.generateMerchantPaymentId();
+              this.loadVolumeSdk();
+              setTimeout(() => {
+                document.getElementById('volume-pay-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 200);
             } else {
               this.payWithCard(txn);
             }
@@ -927,25 +939,97 @@ export class SendMoneyPage implements OnInit, OnDestroy, ViewWillEnter {
     return (v || '').replace(/[ ​‌‍﻿]/g, '').trim();
   }
 
-  // --- Open Banking (Internet Bank Transfer via Fire) ---
-  // Asks the backend to create a Fire payment request, then redirects the payer
-  // to their bank's hosted authorisation page. On return the trust-callback page
-  // confirms with /api/fire/update-payment (it reads remitz_pay_method).
-  private payWithOpenBanking(txn: any): void {
-    const ref = txn?.referenceNumber || this.createdTxnRef;
-    this.http.post<any>(`${this.apiUrl}/fire/payment-request`, { referenceNumber: ref }).subscribe({
+  // --- Volume Pay (Open Banking / Internet Bank Transfer) ---
+  // Loads the Volume SDK, registers a payment intent with our backend, then renders the
+  // Volume widget inline. The backend webhook (/api/volume/webhook) is the source of truth.
+  private loadVolumeSdk(): void {
+    if ((window as any).Volume) {
+      this.volumeReady = true;
+      this.payWithBank();
+      return;
+    }
+    this.volumeScriptEl = document.createElement('script');
+    this.volumeScriptEl.src = 'https://js.volumepay.io';
+    this.volumeScriptEl.onload = () => {
+      this.ngZone.run(() => {
+        this.volumeReady = true;
+        this.payWithBank();
+      });
+    };
+    this.volumeScriptEl.onerror = () => {
+      this.showToast('Could not load Open Banking SDK. Please try again.', 'danger');
+    };
+    document.head.appendChild(this.volumeScriptEl);
+  }
+
+  payWithBank(): void {
+    if (this.volumePayStarted || !this.volumeReady) return;
+    this.volumePayStarted = true;
+
+    this.http.post<any>(`${this.apiUrl}/volume/payment-intent`, {
+      transactionId: this.createdTxnRef,
+      merchantPaymentId: this.merchantPaymentId,
+      amount: this.sendAmount,
+      currency: this.selectedCorridor?.sendCurrency || 'GBP'
+    }).subscribe({
       next: (res) => {
-        const url = res?.url || res?.data?.url;
-        if (url) {
-          window.location.href = url;
-        } else {
-          this.showToast('Could not start open banking payment. Please try again or use a card.', 'danger');
-        }
+        this.initVolumeWidget(res.applicationId, res.environment);
       },
-      error: (err) => {
-        this.showToast(err?.error?.error || 'Open banking is unavailable right now. Please use a card.', 'danger');
+      error: () => {
+        this.volumePayStarted = false;
+        this.showToast('Could not initialise Open Banking. Please try again.', 'danger');
       }
     });
+  }
+
+  private initVolumeWidget(applicationId: string, environment: string): void {
+    const volume = new (window as any).Volume({
+      environment: environment || 'SANDBOX',
+      applicationId: applicationId,
+      agentType: 'WEB_BROWSER',
+      isWebView: false,
+      eventConsumer: (event: any) => {
+        this.ngZone.run(() => this.handleVolumeEvent(event));
+      },
+      errorConsumer: (error: any) => {
+        this.ngZone.run(() => {
+          this.volumePayStarted = false;
+          this.showToast('Payment error. Please try again.', 'danger');
+        });
+      }
+    });
+
+    volume.createPayment({
+      amount: this.sendAmount,
+      merchantPaymentId: this.merchantPaymentId,
+      paymentReference: this.createdTxnRef,
+      agentType: 'WEB_BROWSER'
+    });
+
+    volume.injectComponent('volume-element-container');
+    this.volumeInstance = volume;
+  }
+
+  private handleVolumeEvent(event: any): void {
+    const status = (event?.paymentStatus || event?.status || event?.type || event?.name || '')
+      .toString().toUpperCase();
+    const done = ['COMPLETED', 'SETTLED', 'SUCCESS', 'PAID', 'PAYMENT_COMPLETED'];
+    if (done.some(s => status.includes(s))) {
+      this.router.navigate(['/home/volume-callback'], {
+        queryParams: {
+          merchantPaymentId: this.merchantPaymentId,
+          amount: this.sendAmount,
+          currency: this.selectedCorridor?.sendCurrency || 'GBP',
+          status: 'COMPLETED'
+        }
+      });
+    }
+  }
+
+  private generateMerchantPaymentId(): string {
+    let id = '';
+    for (let i = 0; i < 18; i++) id += Math.floor(Math.random() * 10).toString();
+    return id;
   }
 
   private payWithCard(txn: any): void {
@@ -965,7 +1049,7 @@ export class SendMoneyPage implements OnInit, OnDestroy, ViewWillEnter {
     const callbackUrl = `${window.location.origin}/home/trust-callback`;
 
     const fields: Array<[string, string]> = [
-      ['sitereference',         'test_remitz107329'],
+      ['sitereference',         'test_laylalondo147950'],
       ['stprofile',             'default'],
       ['currencyiso3a',         'GBP'],
       ['mainamount',            mainamount],

@@ -60,13 +60,13 @@ import { Component } from '@angular/core';
       <p>We may disclose your information if required by law or regulation, to enforce our policies, or to protect rights, safety, or property.</p>
 
       <h2>User Rights and Controls</h2>
-      <p>Depending on your location, you may have rights to access your personal data, request correction or deletion, withdraw consent or object to data processing, and request data portability. To exercise these rights, contact us at <a href="mailto:info@remitz.com">info@remitz.com</a>.</p>
+      <p>Depending on your location, you may have rights to access your personal data, request correction or deletion, withdraw consent or object to data processing, and request data portability. To exercise these rights, contact us at <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a>.</p>
 
       <h2>Account Deletion</h2>
       <p>You can request deletion of your account at any time, either from within the mobile app under <strong>Settings &rarr; Delete Account</strong>, via our <a href="/account-deletion">Account Deletion</a> page, or by contacting support.</p>
       <p><strong>What is deleted:</strong> once your request is verified, your account access is removed and your profile information, saved recipients, and marketing preferences are deleted.</p>
       <p><strong>What is retained:</strong> certain transaction history and identity verification (KYC) records may be retained for the legally required retention period under Anti-Money Laundering (AML), KYC, fraud-prevention, tax, and financial regulations before being permanently deleted. This retention is a legal obligation and applies even after you request deletion.</p>
-      <p><strong>Processing time:</strong> deletion requests are normally processed within 30 days. For assistance, contact <a href="mailto:support@remitz.com">support@remitz.com</a>.</p>
+      <p><strong>Processing time:</strong> deletion requests are normally processed within 30 days. For assistance, contact <a href="mailto:support@remitz.co.uk">support@remitz.co.uk</a>.</p>
 
       <h2>Children's Privacy</h2>
       <p>Our services are not intended for children under the age of 13, and we do not knowingly collect data from them. If we learn that we have collected personal data from a child, we will delete it immediately.</p>
@@ -77,10 +77,10 @@ import { Component } from '@angular/core';
       <h2>Contact Us</h2>
       <p>If you have any questions regarding this privacy policy, or wish to access, correct, or complain about how we handle your Personal Information, you may contact us at:<br>
       <strong>Remitz Limited</strong><br>
-      20 Kirkdale Road, London, E11 1HP, United Kingdom<br>
-      Tel: <a href="tel:+442085560888">020 8556 0888</a><br>
-      Email: <a href="mailto:info@remitz.com">info@remitz.com</a><br>
-      Website: <a href="https://www.remitz.com">www.remitz.com</a></p>
+      193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom<br>
+      Tel: <a href="tel:+442085560888">020 7272 8722</a><br>
+      Email: <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a><br>
+      Website: <a href="https://www.remitz.co.uk">www.remitz.co.uk</a></p>
       <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213.</p>
     </div>
   </div></ion-content>`

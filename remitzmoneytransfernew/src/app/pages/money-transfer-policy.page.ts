@@ -38,7 +38,7 @@ import { Component } from '@angular/core';
       <h2>5. How to contact us, Regulation &amp; Complaints</h2>
       <p>You can contact us using the details below. We are regulated in the UK. If you have a complaint, please refer to our Complaint Policy. This Money Transfer Policy is governed by the laws of England &amp; Wales.</p>
 
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom. Tel: 020 8556 0888. E-mail: info@remitz.com. Website: www.remitz.com.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom. Tel: 020 7272 8722. E-mail: info@remitz.co.uk. Website: www.remitz.co.uk.</p>
       <p><a href="/contact-us">Contact us &rarr;</a></p>
     </div>
   </div></ion-content>`

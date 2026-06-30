@@ -34,7 +34,7 @@ import { Component } from '@angular/core';
       <p>Deletion requests are normally processed within 30 days.</p>
 
       <h2>Need Help?</h2>
-      <p>For assistance contact <a href="mailto:support@remitz.com">support@remitz.com</a>.</p>
+      <p>For assistance contact <a href="mailto:support@remitz.co.uk">support@remitz.co.uk</a>.</p>
       <p>See also our <a href="/privacy-policy">Privacy Policy</a>.</p>
     </div>
   </div></ion-content>`

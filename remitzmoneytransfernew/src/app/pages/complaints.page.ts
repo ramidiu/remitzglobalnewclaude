@@ -17,9 +17,9 @@ import { Component } from '@angular/core';
       <p>Complaints can be lodged via the following channels:</p>
       <ul>
         <li>Telephone: <a href="tel:+442085560888">0208 556 0888</a></li>
-        <li>Email: <a href="mailto:complaints@remitz.com">complaints@remitz.com</a></li>
-        <li>Online: <a href="https://www.remitz.com/complaints">www.remitz.com/complaints</a></li>
-        <li>By Post: Remitz Limited, 20 Kirkdale Road, London, E11 1HP</li>
+        <li>Email: <a href="mailto:complaints@remitz.co.uk">complaints@remitz.co.uk</a></li>
+        <li>Online: <a href="https://www.remitz.co.uk/complaints">www.remitz.co.uk/complaints</a></li>
+        <li>By Post: Remitz Limited, 193 Seven Sisters Road, Finsbury Park, London N4 3NG</li>
       </ul>
       <p>Please provide your name, contact details and an outline of the complaint so we can investigate it. Every complaint received is logged and given a unique reference number; please quote this number on any follow-up contact.</p>
 
@@ -41,7 +41,7 @@ import { Component } from '@angular/core';
         <li>Website: <a href="https://www.financial-ombudsman.org.uk" target="_blank" rel="noopener">www.financial-ombudsman.org.uk</a></li>
       </ul>
 
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom.</p>
     </div>
   </div></ion-content>`
 })

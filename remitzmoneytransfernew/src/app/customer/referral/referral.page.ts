@@ -39,7 +39,7 @@ export class ReferralPage implements OnInit {
 
   shareWhatsApp(): void {
     const msg = encodeURIComponent(
-      `Join Remitz Money Transfer — send money internationally with great rates! Use my referral code *${this.referralCode}* when you sign up and get a rate boost on your first transfer. Download: https://remitz.com`
+      `Join Remitz Money Transfer — send money internationally with great rates! Use my referral code *${this.referralCode}* when you sign up and get a rate boost on your first transfer. Download: https://remitz.co.uk`
     );
     window.open(`https://web.whatsapp.com/send?text=${msg}`, 'whatsapp_share', 'width=800,height=600');
   }
@@ -47,7 +47,7 @@ export class ReferralPage implements OnInit {
   shareEmail(): void {
     const subject = encodeURIComponent('Join Remitz Money Transfer — Get a rate boost!');
     const body = encodeURIComponent(
-      `Hey!\n\nI've been using Remitz Money Transfer to send money internationally and it's great. Use my referral code ${this.referralCode} when you sign up and you'll get a rate boost on your first transfer.\n\nSign up: https://remitz.com`
+      `Hey!\n\nI've been using Remitz Money Transfer to send money internationally and it's great. Use my referral code ${this.referralCode} when you sign up and you'll get a rate boost on your first transfer.\n\nSign up: https://remitz.co.uk`
     );
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   }

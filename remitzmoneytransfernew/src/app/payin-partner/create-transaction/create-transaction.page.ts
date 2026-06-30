@@ -444,7 +444,7 @@ import { environment } from '../../../environments/environment';
               </div>
               <div class="ct-field" *ngIf="!isSudan()">
                 <label>Branch Name <span class="ct-req">*</span></label>
-                <input [(ngModel)]="newBen.sortCode" placeholder="e.g. First Abu Dhabi Bank" />
+                <input [(ngModel)]="newBen.sortCode" placeholder="Branch name" />
               </div>
               <div class="ct-field" *ngIf="!isSudan()">
                 <label>Bank State <span class="ct-req">*</span></label>

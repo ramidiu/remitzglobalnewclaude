@@ -286,7 +286,7 @@ ${t.referralCodeUsed ? `<div class="row"><span class="rl">Referral Code</span><s
   shareViaWhatsApp(): void {
     const code = this.referralCode?.code || '';
     const msg = encodeURIComponent(
-      `Join Remitz Money Transfer — send money internationally with great rates!${code ? ` Use my referral code *${code}* when you sign up and get a rate boost on your first transfer.` : ''} Download: https://remitz.com`
+      `Join Remitz Money Transfer — send money internationally with great rates!${code ? ` Use my referral code *${code}* when you sign up and get a rate boost on your first transfer.` : ''} Download: https://remitz.co.uk`
     );
     const url = `https://web.whatsapp.com/send?text=${msg}`;
     // Open in new window with specific dimensions to avoid popup blocker

@@ -30,7 +30,7 @@ import { Component } from '@angular/core';
       <h2>Confirming your pickup point</h2>
       <p>The exact pickup point available to your recipient is confirmed at the time of payout, as our partner network is regularly updated to give you the widest possible coverage. If you would like to confirm whether cash pickup is available at a specific location, please get in touch with our support team before you send.</p>
 
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom. Tel: 020 8556 0888. E-mail: info@remitz.com. Website: www.remitz.com.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom. Tel: 020 7272 8722. E-mail: info@remitz.co.uk. Website: www.remitz.co.uk.</p>
       <p><a href="/contact-us">Contact us &rarr;</a></p>
     </div>
   </div></ion-content>`

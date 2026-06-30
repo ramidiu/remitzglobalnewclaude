@@ -39,7 +39,7 @@ public class TrustWebserviceService {
     @Value("${trust.webservices.password:}")
     private String password;       // webservices password
 
-    @Value("${trust.webservices.sitereference:test_remitz107329}")
+    @Value("${trust.webservices.sitereference:test_laylalondo147950}")
     private String siteReference;
 
     private final RestTemplate restTemplate = new RestTemplate();

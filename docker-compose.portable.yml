@@ -72,7 +72,8 @@ services:
       - TWILIO_FROM_NUMBER=${TWILIO_FROM_NUMBER:-}
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:8098}
       - BRAND_NAME=Remitz Money Transfer
-      - BRAND_SUPPORT_EMAIL=support@remitz.com
+      - BRAND_SUPPORT_EMAIL=${BRAND_SUPPORT_EMAIL:-support@remitz.co.uk}
+      - BRAND_ADDRESS=${BRAND_ADDRESS:-193 Seven Sisters Road, Finsbury Park, London N4 3NG}
       - BRAND_LOGO_URL=${BRAND_LOGO_URL:-}
       - KUBER_ENABLED=${KUBER_ENABLED:-false}
       - FIRE_API_BASE=${FIRE_API_BASE:-https://api.fire.com}
@@ -81,6 +82,10 @@ services:
       - FIRE_REFRESH_TOKEN=${FIRE_REFRESH_TOKEN:-}
       - FIRE_CLIENT_KEY=${FIRE_CLIENT_KEY:-}
       - FIRE_ICAN_TO=${FIRE_ICAN_TO:-52363}
+      # Volume open-banking (Internet Bank Transfer) — set VOLUME_APPLICATION_ID to your own Volume app id.
+      - VOLUME_ENABLED=${VOLUME_ENABLED:-true}
+      - VOLUME_APPLICATION_ID=${VOLUME_APPLICATION_ID:-30f61de5-013a-405a-9ae2-e01ae02036e2}
+      - VOLUME_ENVIRONMENT=${VOLUME_ENVIRONMENT:-SANDBOX}
       - NSANO_BASE_URL=${NSANO_BASE_URL:-https://stream.instantcredit.services}
       - NSANO_API_KEY=${NSANO_API_KEY:-}
       - ZEEPAY_URL=${ZEEPAY_URL:-https://shop.digitaltermination.com/}

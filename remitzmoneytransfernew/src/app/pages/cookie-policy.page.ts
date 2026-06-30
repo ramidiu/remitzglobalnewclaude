@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
       <p>Effective Date: 24 June 2025</p>
     </div>
     <div class="info-body">
-      <p>We use cookies on the www.remitz.com website to help analyse web page flow, customise our service, content and advertising, measure promotional effectiveness, and enhance your user experience while promoting trust and safety.</p>
+      <p>We use cookies on the www.remitz.co.uk website to help analyse web page flow, customise our service, content and advertising, measure promotional effectiveness, and enhance your user experience while promoting trust and safety.</p>
 
       <h2>What Are Cookies?</h2>
       <p>Cookies are small text files that are placed in an internet user's computer memory. The information the cookie contains is set by a website's server and helps the website to recognise your device the next time you visit.</p>
@@ -35,7 +35,7 @@ import { Component } from '@angular/core';
       <p>You can control or delete cookies through your browser settings. Please note that rejecting or deleting certain cookies may affect functionality such as registration and login. For additional information you may wish to read our Privacy Policy or visit www.aboutcookies.org.</p>
 
       <h2>Contact</h2>
-      <p>Questions about cookies? Email <a href="mailto:info@remitz.com">info@remitz.com</a>. See also our <a href="/privacy-policy">Privacy Policy</a>.</p>
+      <p>Questions about cookies? Email <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a>. See also our <a href="/privacy-policy">Privacy Policy</a>.</p>
       <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213.</p>
     </div>
   </div></ion-content>`

@@ -14,20 +14,20 @@ import { Component } from '@angular/core';
 
       <h2>1. General Information</h2>
       <h3>1.1 Service Provider</h3>
-      <p>The money remittance service is provided by Remitz Ltd (Remitz) (CRN: 07956213), a privately owned limited company. Remitz is regulated by the Financial Conduct Authority in the UK as a Small Payment Institution (FRN: 584554).</p>
+      <p>The money remittance service is provided by Remitz Ltd (Remitz) (CRN: 07956213), a privately owned limited company. Remitz is regulated by the Financial Conduct Authority in the UK as a Small Payment Institution (FRN: 520583).</p>
 
       <h3>1.2 No Financial Advice</h3>
       <p>The information contained in this document is general in nature and is provided purely for information purposes. Our website also contains useful historical data and some charting and research tools. We may also provide you with general oral advice about how foreign exchange transactions work during the course of our dealings with you.</p>
       <p>Please note however that none of the information we provide to you, either on our website or over the phone, will take into account your personal financial circumstances and needs. You will always need to exercise your own judgment and should obtain independent financial advice as to the amount, type and timing of any particular transaction you enter into with us.</p>
 
       <h3>1.3 Contact Us</h3>
-      <p>If you require further information, or do not understand any part of this document or anything on our website, please contact us by telephone on 020 8556 0888 or by email at admin@remitz.com.</p>
+      <p>If you require further information, or do not understand any part of this document or anything on our website, please contact us by telephone on 020 7272 8722 or by email at admin@remitz.co.uk.</p>
 
       <h3>1.4 Client Agreement</h3>
       <p>You will need to enter into a Client Agreement with us before we provide you with our service. We have two client agreements: one for companies and one for individuals. You must ensure that you fully understand the terms set out in the relevant Client Agreement before you transact with us.</p>
 
       <h3>1.5 Money Laundering</h3>
-      <p>Remitz is registered with HMRC as a Money Services Business (Registration No. XHML00000105906). Please see our Money Laundering Policy and Statement on our website at www.remitz.com.</p>
+      <p>Remitz is registered with HMRC as a Money Services Business (Registration No. XAML00000177279). Please see our Money Laundering Policy and Statement on our website at www.remitz.co.uk.</p>
 
       <h2>2. The Service</h2>
       <p>Remitz provides a money transfer service that allows you to send funds to family, friends and associates abroad quickly, reliably and securely. We will tell you the applicable exchange rate and any fees before you confirm each transaction.</p>
@@ -45,7 +45,7 @@ import { Component } from '@angular/core';
       <h2>5. Applicable Laws &amp; Dispute Resolution</h2>
       <p>Our service is governed by the laws of England &amp; Wales. If you have a complaint, please refer to our Complaint Policy. We are committed to resolving any dispute fairly and promptly.</p>
 
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom. Tel: 020 8556 0888. E-mail: info@remitz.com. Website: www.remitz.com.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom. Tel: 020 7272 8722. E-mail: info@remitz.co.uk. Website: www.remitz.co.uk.</p>
       <p><a href="/contact-us">Contact us &rarr;</a></p>
     </div>
   </div></ion-content>`

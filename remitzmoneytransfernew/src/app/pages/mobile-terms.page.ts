@@ -31,8 +31,8 @@ import { Component } from '@angular/core';
       <p>You must not misuse the app, attempt to reverse engineer it, or use it for unlawful activity. We may suspend access for breach of these terms.</p>
 
       <h2>7. Contact</h2>
-      <p>Call <a href="tel:+442085560888">020 8556 0888</a> or email <a href="mailto:info@remitz.com">info@remitz.com</a>. See also our <a href="/mobile-privacy">Mobile Privacy Policy</a>.</p>
-      <p class="info-muted">Remitz Limited, registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom.</p>
+      <p>Call <a href="tel:+442085560888">020 7272 8722</a> or email <a href="mailto:info@remitz.co.uk">info@remitz.co.uk</a>. See also our <a href="/mobile-privacy">Mobile Privacy Policy</a>.</p>
+      <p class="info-muted">Remitz Limited, registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom.</p>
     </div>
   </div></ion-content>`
 })

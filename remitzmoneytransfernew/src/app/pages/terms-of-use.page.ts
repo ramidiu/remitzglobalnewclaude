@@ -36,7 +36,7 @@ import { Component } from '@angular/core';
       <h2>8. Alterations, Privacy &amp; Jurisdiction</h2>
       <p>We may alter or update the Website and these terms at any time. Your privacy is governed by our Privacy Policy. These terms are governed by the laws of England &amp; Wales and subject to the jurisdiction of its courts.</p>
 
-      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 20 Kirkdale Road, London, E11 1HP, United Kingdom. Tel: 020 8556 0888. E-mail: info@remitz.com. Website: www.remitz.com.</p>
+      <p class="info-muted">Remitz Limited is a company registered in England &amp; Wales. Company Registration No: 07956213. Registered office: 193 Seven Sisters Road, Finsbury Park, London N4 3NG, United Kingdom. Tel: 020 7272 8722. E-mail: info@remitz.co.uk. Website: www.remitz.co.uk.</p>
       <p><a href="/contact-us">Contact us &rarr;</a></p>
     </div>
   </div></ion-content>`
